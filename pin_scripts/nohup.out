@@ -1,0 +1,70 @@
+Waiting for an action server to become available...
+Sending goal:
+     gpio: 23,high
+
+Goal accepted with ID: 867fec9b805749d584081d5ee1c12153
+
+Result:
+    value: 3
+
+Goal finished with status: SUCCEEDED
+Waiting for an action server to become available...
+Sending goal:
+     gpio: 23,low
+
+Goal accepted with ID: d2979143d7a046afa436ee2f71cec289
+
+Result:
+    value: 3
+
+Goal finished with status: SUCCEEDED
+Waiting for an action server to become available...
+Sending goal:
+     gpio: 23,high
+
+Goal accepted with ID: a4947266b22249e9be11269b0c69e5f0
+
+Result:
+    value: 3
+
+Goal finished with status: SUCCEEDED
+Waiting for an action server to become available...
+Sending goal:
+     gpio: 23,low
+
+Goal accepted with ID: 38bf73bc990d4000b8670eb9e6b0055f
+
+Result:
+    value: 3
+
+Goal finished with status: SUCCEEDED
+Waiting for an action server to become available...
+Sending goal:
+     gpio: 23,high
+
+Goal accepted with ID: 0c7a61f256eb4c2cbce2e5085c3910df
+
+Result:
+    value: 3
+
+Goal finished with status: SUCCEEDED
+Waiting for an action server to become available...
+Sending goal:
+     gpio: 23,low
+
+Goal accepted with ID: 7c7056c872ac4a68b70f980d8e7f1c2c
+
+Result:
+    value: 3
+
+Goal finished with status: SUCCEEDED
+Waiting for an action server to become available...
+Sending goal:
+     gpio: 23,high
+
+Goal accepted with ID: e2e485a6278a475a9de0267e4a7330fb
+
+Result:
+    value: 3
+
+Goal finished with status: SUCCEEDED
