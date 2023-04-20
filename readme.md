@@ -23,14 +23,14 @@ When creating a new package for nodes, do this on the turtlebot (because colcon 
 ### Adding a node to a package
 For example let"s add a node to the package **test_nodes**, do this on your laptop:
 - Create a node in python (e.g. mynode.py) (location: TurtleLab/test_nodes/test_nodes/mynode.py)
-- add an entry point in the setup.py file (location: TurtleLab/test_nodes/setup.py): <br/>
-    entry_points={ <br/>
-        'console_scripts': [   <br/>             
-        	'talker = test_nodes.publisher_firemech_test:main', <br/>
-            'listener = test_nodes.subscriber_firemech:main', <br/>
-             *ADD AN ENTRY POINT HERE, e.g. <'name = pkg_name.filename:function_name'>* <br/>
-        ], <br/>
-    } <br/>
+- add an entry point in the setup.py file (location: TurtleLab/test_nodes/setup.py):
+entry_points={ <br/>
+&emsp;'console_scripts': [   <br/>             
+&emsp;&emsp;'talker = test_nodes.publisher_firemech_test:main', <br/>
+&emsp;&emsp;'listener = test_nodes.subscriber_firemech:main', <br/>
+&emsp;&emsp;*ADD AN ENTRY POINT HERE, e.g. <'name = pkg_name.filename:function_name'>* <br/>
+&emsp;], <br/>
+} <br/>
 - add to git: `git status`, `git add --all`, `git commit -m "new package"`, `git push`
 - connect to turtlebot `ssh ubuntu@192.168.5.5`
 - go to git repo `cd turtlebot_ws/src` and pull changes `git pull`
