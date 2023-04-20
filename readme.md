@@ -23,8 +23,8 @@ When creating a new package for nodes, do this on the turtlebot (because colcon 
 ### Adding a node to a package
 For example let"s add a node to the package **test_nodes**, do this on your laptop:
 - Create a node in python (e.g. mynode.py) (location: TurtleLab/test_nodes/test_nodes/mynode.py)
-- add an entry point in the setup.py file (location: TurtleLab/test_nodes/setup.py):
-entry_points={ <br/>
+- add an entry point in the setup.py file (location: TurtleLab/test_nodes/setup.py): <br/>
+entry_points={ 
 &emsp;'console_scripts': [   <br/>             
 &emsp;&emsp;'talker = test_nodes.publisher_firemech_test:main', <br/>
 &emsp;&emsp;'listener = test_nodes.subscriber_firemech:main', <br/>
