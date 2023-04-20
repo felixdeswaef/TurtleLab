@@ -25,7 +25,7 @@ For example let"s add a node to the package **test_nodes**, do this on your lapt
 - Create a node in python (e.g. mynode.py) (location: TurtleLab/test_nodes/test_nodes/mynode.py)
 - add an entry point in the setup.py file (location: TurtleLab/test_nodes/setup.py): <br/>
 entry_points={ 
-&emsp;'console_scripts': [   <br/>             
+&emsp;'console_scripts': [<br/>             
 &emsp;&emsp;'talker = test_nodes.publisher_firemech_test:main', <br/>
 &emsp;&emsp;'listener = test_nodes.subscriber_firemech:main', <br/>
 &emsp;&emsp;*ADD AN ENTRY POINT HERE, e.g. <'name = pkg_name.filename:function_name'>* <br/>
