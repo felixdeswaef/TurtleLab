@@ -24,7 +24,7 @@ class MinimalSubscriber(Node):
     	if(msg.data == 'activeren'):
            GPIO.output(Motoren, GPIO.HIGH)
 
-        else if(msg.data == 'deactiveren'):
+        elif(msg.data == 'deactiveren'):
            GPIO.output(Motoren, GPIO.LOW)
            
         else: #voor als er iets zou misgaan met de messages
