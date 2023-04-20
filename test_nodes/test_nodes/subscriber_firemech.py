@@ -5,6 +5,10 @@ from std_msgs.msg import String
 import RPi.GPIO as GPIO
 import time
 
+GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)
+Motoren = 23
+
 class MinimalSubscriber(Node):
 
     def __init__(self):
@@ -18,13 +22,13 @@ class MinimalSubscriber(Node):
 
     def listener_callback(self, msg):
     	if(msg.data == 'activeren'):
-           GPIO.output(Motoren, 1)
+           GPIO.output(Motoren, GPIO.HIGH)
 
         else if(msg.data == 'deactiveren'):
-           GPIO.output(Motoren, 0)
+           GPIO.output(Motoren, GPIO.LOW)
            
         else: #voor als er iets zou misgaan met de messages
-           GPIO.output(Motoren, 0)
+           GPIO.output(Motoren, GPIO.LOW)
         self.get_logger().info('I heard: "%s"' % msg.data)
 
 
