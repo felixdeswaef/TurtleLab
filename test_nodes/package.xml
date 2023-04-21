@@ -7,6 +7,11 @@
   <maintainer email="ubuntu@todo.todo">ubuntu</maintainer>
   <license>TODO: License declaration</license>
 
+  <exec_depend>sys</exec_depend>
+  <exec_depend>select</exec_depend>
+  <exec_depend>termios</exec_depend>
+  <exec_depend>tty</exec_depend>
+
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>
   <test_depend>ament_pep257</test_depend>
