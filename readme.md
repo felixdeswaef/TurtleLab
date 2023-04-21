@@ -29,7 +29,7 @@ entry_points={ <br/>
 &emsp;'console_scripts': [<br/>             
 &emsp;&emsp;'talker = test_nodes.publisher_firemech_test:main',<br/>
 &emsp;&emsp;'listener = test_nodes.subscriber_firemech:main',<br/>
-&emsp;&emsp;*ADD AN ENTRY POINT HERE, e.g. <'name = pkg_name.filename:function_name'>*<br/>
+&emsp;&emsp;*ADD AN ENTRY POINT HERE, e.g. <'name = pkg_name.file_name:function_name'>*<br/>
 &emsp;],<br/>
 }<br/>
 - if your node uses imports that are note standard ros, include them in the **package.xml**, e.g. <exec_depend>your_lib</exec_depend> as depencies. (more info in the [docs](https://docs.ros.org/en/foxy/Tutorials/Intermediate/Rosdep.html))
@@ -43,7 +43,7 @@ After you have written some code on your laptop and you have pushed this code to
 - go to the local git repo on the bot with `cd turtlebot_ws/src`
 - pull the changes from the remote git repo with `git pull`
 - go back to the turtlebot_ws folder `cd ..` and build the project with `colcon build`
-- run your nodes with `ros2 run pkg_name node_name`
+- run your nodes with `ros2 run pkg_name node_name`<br/>
 Note: If you are using depencies on the bot from other git repos, venvs, large files,... -> add them to the **.gitignore** file.
 
 
