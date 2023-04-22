@@ -45,11 +45,14 @@ def rainbow_cycle(wait):
         time.sleep(wait)
         
 # TODO: add multiple subscribers in this node to reflect status on LED's
+# http://docs.ros.org/en/foxy/The-ROS2-Project/Contributing/Migration-Guide-Python.html
 
 class MinimalSubscriber(Node):
 
     def __init__(self):
         super().__init__('minimal_subscriber')
+        #sub = node.create_subscription(String, 'chatter', callback)
+
         self.subscription = self.create_subscription(
             String,
             'detected',
