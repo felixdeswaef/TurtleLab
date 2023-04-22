@@ -90,7 +90,7 @@ class MovementPublisher(Node):
         """
         self.get_logger().info(f"Camera_processor received msg = {msg.data}")
         #parse msg
-        angle, distance, detected = msg.data.split(";") 
+        angle, distance, detected = str(msg.data).split(";") 
         angle = float(angle)
         distance = float(distance)
         detected = float(detected)
