@@ -6,6 +6,7 @@
   <description>TODO: Package description</description>
   <maintainer email="ubuntu@todo.todo">ubuntu</maintainer>
   <license>TODO: License declaration</license>
+  <license>Apache License 2.0</license>
 
   <exec_depend>sys</exec_depend>
   <exec_depend>select</exec_depend>
