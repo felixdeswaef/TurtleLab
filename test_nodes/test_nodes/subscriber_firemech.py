@@ -24,7 +24,7 @@ class MinimalSubscriber(Node):
 
     def listener_callback(self, msg):
         if msg.data == 'activeren':
-            #GPIO.output(Motoren, GPIO.HIGH)
+            GPIO.output(Motoren, GPIO.HIGH)
             time.sleep(2)
             servoLader_pwm.ChangeDutyCycle(10.5)
             time.sleep(0.5)
