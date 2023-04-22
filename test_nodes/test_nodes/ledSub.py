@@ -31,15 +31,6 @@ solid = Solid(pixels, color=RED)
 
 class MinimalSubscriber(Node):
 
-    if anim == 1:
-        rainbow.animate()
-    elif anim == 2:
-        comet.animate()
-    elif anim == 3:
-        chase.animate()
-    else:
-        solid.animate()
-
     def __init__(self):
         super().__init__('minimal_subscriber')
 
@@ -49,21 +40,38 @@ class MinimalSubscriber(Node):
             self.listener_callback,
             10)
         self.subscription  # prevent unused variable warning
+        
+        timer_period = 0.1  # 50Hz
+        self.timer = self.create_timer(timer_period, self.timer_callback)
 
     def listener_callback(self, msg):
         #self.get_logger().info('bot_state: "%s"' % msg.data)
         
         if msg.data == 'driving':
             anim = 1
+            self.get_logger().info('LEDS: DRIVING')
             
         elif msg.data == 'detected':
             anim = 2
+            self.get_logger().info('LEDS: DETECTED')
             
         elif msg.data == 'shoot':
             anim = 3
+            self.get_logger().info('LEDS: SHOOT')
         # Unknown data -> solid red
         else:
             anim = 0
+            self.get_logger().info('LEDS: UNKNOWN')
+    
+    def timer_callback(self):
+        if anim == 1:
+            rainbow.animate()
+        elif anim == 2:
+            comet.animate()
+        elif anim == 3:
+            chase.animate()
+        else:
+            solid.animate()
             
 def main(args=None):
     rclpy.init(args=args)
