@@ -26,6 +26,12 @@ pixels = neopixel.NeoPixel(
     pixel_pin, num_pixels, brightness=0.5, auto_write=False, pixel_order=ORDER
 )
 
+blink = Blink(pixels, speed=0.5, color=JADE)
+comet = Comet(pixels, speed=0.01, color=PURPLE, tail_length=10, bounce=True)
+chase = Chase(pixels, speed=0.1, size=3, spacing=6, color=AMBER)
+
+animations = AnimationSequence(blink, comet, chase, advance_interval=3, auto_clear=True)
+
 def wheel(pos):
     # Input a value 0 to 255 to get a color value.
     # The colours are a transition r - g - b - back to r.
@@ -79,4 +85,4 @@ while True:
     # pixels.show()
     # time.sleep(1)
     # rainbow_cycle(0.005)  # rainbow cycle with 5ms delay per step
-    Comet(pixels, speed=0.01, color=PURPLE, tail_length=10, bounce=True)
+    animations.animate()
