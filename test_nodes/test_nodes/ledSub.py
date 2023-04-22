@@ -21,12 +21,8 @@ GPIO.setup(25, GPIO.OUT)
 #from adafruit_led_animation.color import *
 
 num_pixels = 34
-
 pixel_pin = board.D18
 ORDER = neopixel.GRB
-pixels = neopixel.NeoPixel(
-    pixel_pin, num_pixels, brightness=0.5, auto_write=False, pixel_order=ORDER
-)
 
 bluestate = 0
 anim = 0
@@ -38,7 +34,11 @@ anim = 0
 class MinimalSubscriber(Node):
 
     def __init__(self):
-        super().__init__('minimal_subscriber')
+        global num_pixels
+        global pixel_pin
+        global ORDER
+        
+        super().__init__('pixel_node')
 
         self.subscription = self.create_subscription(
             String,
@@ -46,7 +46,8 @@ class MinimalSubscriber(Node):
             self.listener_callback,
             10)
         self.subscription  # prevent unused variable warning
-        
+        self.pixels = neopixel.NeoPixel(pixel_pin, num_pixels, brightness=0.5, auto_write=False, pixel_order=ORDER
+)
         timer_period = 0.5  # 2Hz
         self.timer = self.create_timer(timer_period, self.timer_callback)
 
@@ -65,7 +66,7 @@ class MinimalSubscriber(Node):
         elif msg.data == 'shoot':
             anim = 3
             self.get_logger().info('LEDS: SHOOT')
-        # Unknown data -> solid red
+
         else:
             anim = 0
             self.get_logger().info('LEDS: UNKNOWN')
@@ -80,29 +81,29 @@ class MinimalSubscriber(Node):
         else:
             GPIO.output(25, GPIO.LOW)
             bluestate = 0
-
-        #pixels.fill((255, 0, 0))
-        #pixels.show()
-        #if anim == 1:
-        #    rainbow.animate()
-        #elif anim == 2:
-        #    comet.animate()
-        #elif anim == 3:
-        #    chase.animate()
-        #else:
-        #    solid.animate()
+        
+        if anim == 1:
+            self.pixels.fill((255, 255, 255))
+        elif anim == 2:
+            self.pixels.fill((255, 127, 0))
+        elif anim == 3:
+            self.pixels.fill((255, 0, 255))
+        else:
+            self.pixels.fill((255, 0, 0))
+            
+        self.pixels.show()
             
 def main(args=None):
     rclpy.init(args=args)
 
-    minimal_subscriber = MinimalSubscriber()
+    pixel_node = pixelNode()
 
-    rclpy.spin(minimal_subscriber)
+    rclpy.spin(pixel_node)
 
     # Destroy the node explicitly
     # (optional - otherwise it will be done automatically
     # when the garbage collector destroys the node object)
-    minimal_subscriber.destroy_node()
+    pixel_node.destroy_node()
     rclpy.shutdown()
    
 if __name__ == '__main__':

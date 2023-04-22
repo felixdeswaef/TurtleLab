@@ -30,10 +30,8 @@ class MinimalSubscriber(Node):
             time.sleep(0.5)
             servoLader_pwm.ChangeDutyCycle(2)
             time.sleep(0.5)
-            servoLader_pwm.ChangeDutyCycle(10.5)
-        
-        elif msg.data == 'deactiveren':
             GPIO.output(Motoren, GPIO.LOW)
+            servoLader_pwm.ChangeDutyCycle(10.5)
             
         else: # voor als er iets zou misgaan met de messages
             GPIO.output(Motoren, GPIO.LOW)
