@@ -9,9 +9,8 @@ class MinimalPublisher(Node):
     def __init__(self):
         super().__init__('minimal_publisher')
         self.publisher_ = self.create_publisher(String, 'topic', 10)
-        timer_period = 6  # seconds
+        timer_period = 4  # seconds
         self.timer = self.create_timer(timer_period, self.timer_callback)
-        self.state = 0
 
     def timer_callback(self):
         msg = String()
@@ -20,7 +19,6 @@ class MinimalPublisher(Node):
         self.publisher_.publish(msg)
           
         self.get_logger().info('Publishing: "%s"' % msg.data)
-        self.state = not self.state
 
 
 def main(args=None):
