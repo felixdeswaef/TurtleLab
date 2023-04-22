@@ -31,6 +31,15 @@ solid = Solid(pixels, color=RED)
 
 class MinimalSubscriber(Node):
 
+    if anim == 1:
+        rainbow.animate()
+    elif anim == 2:
+        comet.animate()
+    elif anim == 3:
+        chase.animate()
+    else:
+        solid.animate()
+
     def __init__(self):
         super().__init__('minimal_subscriber')
 
@@ -62,15 +71,6 @@ def main(args=None):
     minimal_subscriber = MinimalSubscriber()
 
     rclpy.spin(minimal_subscriber)
-    
-    if anim == 1:
-        rainbow.animate()
-    elif anim == 2:
-        comet.animate()
-    elif anim == 3:
-        chase.animate()
-    else:
-        solid.animate()
 
     # Destroy the node explicitly
     # (optional - otherwise it will be done automatically
