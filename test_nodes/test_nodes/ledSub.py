@@ -20,9 +20,7 @@ GPIO.setup(25, GPIO.OUT)
 #from adafruit_led_animation.animation.solid import Solid
 #from adafruit_led_animation.color import *
 
-num_pixels = 34
-pixel_pin = board.D18
-ORDER = neopixel.GRB
+
 
 bluestate = 0
 #rainbow = Rainbow(pixels, speed=0.1, period=3, step=5)
@@ -32,11 +30,7 @@ bluestate = 0
 
 class pixelNode(Node):
 
-    def __init__(self):
-        global num_pixels
-        global pixel_pin
-        global ORDER
-        
+    def __init__(self, pixel_pin = board.D18, num_pixels = 34, ORDER = neopixel.GRB):       
         super().__init__('pixel_node')
 
         self.subscription = self.create_subscription(
@@ -46,7 +40,10 @@ class pixelNode(Node):
             10)
         self.subscription  # prevent unused variable warning
         self.pixels = neopixel.NeoPixel(pixel_pin, num_pixels, brightness=0.5, auto_write=False, pixel_order=ORDER
-)
+)       self.pixels.fill((255, 0, 0))
+        self.pixels.show()
+        
+        # blue led blinker
         timer_period = 0.5  # 2Hz
         self.timer = self.create_timer(timer_period, self.timer_callback)
 
@@ -68,7 +65,7 @@ class pixelNode(Node):
             self.get_logger().info('LEDS: UNKNOWN')
         
         self.pixels.show()
-         
+        
     def timer_callback(self):
         global bluestate
         
