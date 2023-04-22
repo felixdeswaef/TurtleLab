@@ -25,7 +25,6 @@ pixel_pin = board.D18
 ORDER = neopixel.GRB
 
 bluestate = 0
-anim = 0
 #rainbow = Rainbow(pixels, speed=0.1, period=3, step=5)
 #comet = Comet(pixels, speed=0.1, color=PURPLE, tail_length=17, bounce=True)
 #chase = Chase(pixels, speed=0.1, size=4, spacing=6, color=AMBER)
@@ -51,47 +50,34 @@ class MinimalSubscriber(Node):
         timer_period = 0.5  # 2Hz
         self.timer = self.create_timer(timer_period, self.timer_callback)
 
-    def listener_callback(self, msg):
-        global anim
-        #self.get_logger().info('bot_state: "%s"' % msg.data)
-        
+    def listener_callback(self, msg):        
         if msg.data == 'driving':
-            anim = 1
+            self.pixels.fill((255, 255, 255))
             self.get_logger().info('LEDS: DRIVING')
             
         elif msg.data == 'detected':
-            anim = 2
+            self.pixels.fill((255, 127, 0))
             self.get_logger().info('LEDS: DETECTED')
             
         elif msg.data == 'shoot':
-            anim = 3
+            self.pixels.fill((255, 0, 255))
             self.get_logger().info('LEDS: SHOOT')
 
         else:
-            anim = 0
+            self.pixels.fill((255, 0, 0))
             self.get_logger().info('LEDS: UNKNOWN')
-    
+        
+        self.pixels.show()
+         
     def timer_callback(self):
         global bluestate
-        global anim
         
         if bluestate == 0:
             GPIO.output(25, GPIO.HIGH)
             bluestate = 1
         else:
             GPIO.output(25, GPIO.LOW)
-            bluestate = 0
-        
-        if anim == 1:
-            self.pixels.fill((255, 255, 255))
-        elif anim == 2:
-            self.pixels.fill((255, 127, 0))
-        elif anim == 3:
-            self.pixels.fill((255, 0, 255))
-        else:
-            self.pixels.fill((255, 0, 0))
-            
-        self.pixels.show()
+            bluestate = 0       
             
 def main(args=None):
     rclpy.init(args=args)
