@@ -10,7 +10,7 @@ from adafruit_led_animation.animation.comet import Comet
 from adafruit_led_animation.animation.chase import Chase
 from adafruit_led_animation.animation.rainbow import Rainbow
 from adafruit_led_animation.sequence import AnimationSequence
-from adafruit_led_animation.color import PURPLE, AMBER, JADE
+from adafruit_led_animation.color import PURPLE, AMBER, JADE, WHITE
 
 # Choose an open pin connected to the Data In of the NeoPixel strip, i.e. board.D18
 # NeoPixels must be connected to D10, D12, D18 or D21 to work.
