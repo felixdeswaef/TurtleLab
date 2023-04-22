@@ -6,9 +6,12 @@ import RPi.GPIO as GPIO
 import time
 
 GPIO.setmode(GPIO.BCM)
-GPIO.setup(23, GPIO.OUT)
 GPIO.setwarnings(False)
 Motoren = 23
+Lader = 18
+GPIO.setup(Motoren, GPIO.OUT)
+GPIO.setup(Lader, GPIO.OUT)
+servoLader_pwm = GPIO.PWM(Lader,1000)
 
 class MinimalSubscriber(Node):
 
@@ -21,6 +24,10 @@ class MinimalSubscriber(Node):
     def listener_callback(self, msg):
         if msg.data == 'activeren':
             GPIO.output(Motoren, GPIO.HIGH)
+            sleep(1)
+            servoLader_pwm.ChangeDutyCycle(30)
+            sleep(0.5)
+            servoLader_pwm.ChangeDutyCycle(0)
         
         elif msg.data == 'deactiveren':
             GPIO.output(Motoren, GPIO.LOW)
