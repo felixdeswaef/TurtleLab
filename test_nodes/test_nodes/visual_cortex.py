@@ -43,7 +43,7 @@ class Visual_Cortex(Node):
         if not ret:
             self.get_logger().warning('Failed to read frame from camera')
             return
-        var3=self.pose_estimation()
+        var3=self.pose_estimation(frame)
 
 
         msg = msg.data = str(var3)
