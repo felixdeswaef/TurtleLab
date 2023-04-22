@@ -5,6 +5,10 @@
 import time
 import board
 import neopixel
+from adafruit_led_animation.animation.blink import Blink
+from adafruit_led_animation.animation.comet import Comet
+from adafruit_led_animation.animation.chase import Chase
+from adafruit_led_animation.sequence import AnimationSequence
 
 # Choose an open pin connected to the Data In of the NeoPixel strip, i.e. board.D18
 # NeoPixels must be connected to D10, D12, D18 or D21 to work.
@@ -73,4 +77,5 @@ while True:
     # pixels.fill((0, 0, 255, 0))
     # pixels.show()
     # time.sleep(1)
-    rainbow_cycle(0.005)  # rainbow cycle with 5ms delay per step
+    # rainbow_cycle(0.005)  # rainbow cycle with 5ms delay per step
+    Chase(pixels, speed=0.1, size=3, spacing=6, color=AMBER)
