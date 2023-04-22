@@ -13,7 +13,7 @@ class Visual_Cortex(Node):
         self.cm = [[823.93985557  , 0.      ,   322.76228491],
  [  0.    ,     825.11141958 ,279.6240493 ],
  [  0.    ,       0.      ,     1.        ]]
-        self.parameters = cv2.aruco.DetectorParameters_create()
+        self.parameters = cv2.aruco.DetectorParameters()
         self.dm = [[ 6.29137073e-02 ,-7.33484417e-01  ,6.53444356e-03 , 3.83894903e-03,
    1.16325776e+01]]
         self.hoek=45            #nog te testen 
