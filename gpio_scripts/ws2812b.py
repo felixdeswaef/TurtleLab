@@ -79,4 +79,4 @@ while True:
     # pixels.show()
     # time.sleep(1)
     # rainbow_cycle(0.005)  # rainbow cycle with 5ms delay per step
-    Chase(pixels, speed=0.1, size=3, spacing=6, color=AMBER)
+    Comet(pixels, speed=0.01, color=PURPLE, tail_length=10, bounce=True)
