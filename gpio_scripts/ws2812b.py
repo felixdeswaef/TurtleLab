@@ -8,6 +8,7 @@ import neopixel
 from adafruit_led_animation.animation.blink import Blink
 from adafruit_led_animation.animation.comet import Comet
 from adafruit_led_animation.animation.chase import Chase
+from adafruit_led_animation.animation.rainbow import Rainbow
 from adafruit_led_animation.sequence import AnimationSequence
 from adafruit_led_animation.color import PURPLE, AMBER, JADE
 
@@ -26,11 +27,12 @@ pixels = neopixel.NeoPixel(
     pixel_pin, num_pixels, brightness=0.5, auto_write=False, pixel_order=ORDER
 )
 
-blink = Blink(pixels, speed=0.5, color=JADE)
-comet = Comet(pixels, speed=0.01, color=PURPLE, tail_length=10, bounce=True)
-chase = Chase(pixels, speed=0.1, size=3, spacing=6, color=AMBER)
+blink = Blink(pixels, speed=0.1, color=WHITE)
+comet = Comet(pixels, speed=0.1, color=PURPLE, tail_length=(num_pixels/2), bounce=True)
+chase = Chase(pixels, speed=0.1, size=4, spacing=6, color=AMBER)
+rainbow = Rainbow(pixels, speed=0.1, period=2)
 
-animations = AnimationSequence(blink, comet, chase, advance_interval=3, auto_clear=True)
+animations = AnimationSequence(blink, comet, chase, rainbow, advance_interval=5, auto_clear=True)
 
 def wheel(pos):
     # Input a value 0 to 255 to get a color value.
@@ -64,25 +66,4 @@ def rainbow_cycle(wait):
 
 
 while True:
-    # Comment this line out if you have RGBW/GRBW NeoPixels
-    # pixels.fill((255, 0, 0))
-    # Uncomment this line if you have RGBW/GRBW NeoPixels
-    # pixels.fill((255, 0, 0, 0))
-    # pixels.show()
-    # time.sleep(1)
-
-    # Comment this line out if you have RGBW/GRBW NeoPixels
-    # pixels.fill((0, 255, 0))
-    # Uncomment this line if you have RGBW/GRBW NeoPixels
-    # pixels.fill((0, 255, 0, 0))
-    # pixels.show()
-    # time.sleep(1)
-
-    # Comment this line out if you have RGBW/GRBW NeoPixels
-    # pixels.fill((0, 0, 255))
-    # Uncomment this line if you have RGBW/GRBW NeoPixels
-    # pixels.fill((0, 0, 255, 0))
-    # pixels.show()
-    # time.sleep(1)
-    # rainbow_cycle(0.005)  # rainbow cycle with 5ms delay per step
     animations.animate()
