@@ -7,6 +7,7 @@ from std_msgs.msg import String
 import time
 import board
 import neopixel
+from adafruit_led_animation.animation.chase import Chase
 
 num_pixels = 34
 
@@ -60,7 +61,7 @@ class MinimalSubscriber(Node):
         self.subscription  # prevent unused variable warning
 
     def listener_callback(self, msg):
-        self.get_logger().info('leds: "%s"' % msg.data)
+        self.get_logger().info('bot_state: "%s"' % msg.data)
         
         if msg.data == 'driving':
             anim = 0
@@ -68,11 +69,8 @@ class MinimalSubscriber(Node):
         elif msg.data == 'detected':
             anim = 1
             
-        elif msg.data == 'spooling':
+        elif msg.data == 'shoot':
             anim = 2
-            
-        elif msg.data == 'firing':
-            anim = 3
 
 def anim0():
     rainbow_cycle(0.005)
@@ -80,12 +78,8 @@ def anim0():
 def anim1():
     pixels.fill((255, 127, 0))
     pixels.show()
-            
-def anim2():
-    pixels.fill((255, 0, 255))
-    pixels.show()
 
-def anim3():
+def anim2():
     pixels.fill((255, 255, 255))
     pixels.show()
             
@@ -102,8 +96,6 @@ def main(args=None):
         anim1()
     elif anim == 2:
         anim2()
-    else anim == 3:
-        anim3()
 
     # Destroy the node explicitly
     # (optional - otherwise it will be done automatically
