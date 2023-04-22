@@ -51,7 +51,6 @@ class MinimalSubscriber(Node):
 
     def __init__(self):
         super().__init__('minimal_subscriber')
-        #sub = node.create_subscription(String, 'chatter', callback)
 
         self.subscription = self.create_subscription(
             String,
@@ -61,31 +60,35 @@ class MinimalSubscriber(Node):
         self.subscription  # prevent unused variable warning
 
     def listener_callback(self, msg):
-        self.get_logger().info('I heard: "%s"' % msg.data)
+        self.get_logger().info('leds: "%s"' % msg.data)
         
         if(msg.data == 'driving'):
-            rainbow_cycle(0.005)
+            anim = 0
             
         elif(msg.data == 'detected'):
-            pixels.fill((255, 127, 0))
-            pixels.show()
+            anim = 1
             
         elif(msg.data == 'spooling'):
-            pixels.fill((255, 0, 255))
-            pixels.show()
+            anim = 2
             
         elif(msg.data == 'firing'):
-        
-        # Set white for 1 second when code detection is triggered
-        pixels.fill((255, 255, 255))
-        pixels.show()
-        time.sleep(1)
-        pixels.fill((0, 0, 0))
-        pixels.show()
-        
-        #   # rainbow cycle with 5ms delay per step
+            anim = 3
 
-        
+def anim0():
+    rainbow_cycle(0.005)
+
+def anim1():
+    pixels.fill((255, 127, 0))
+    pixels.show()
+            
+def anim2():
+    pixels.fill((255, 0, 255))
+    pixels.show()
+
+def anim3():
+    pixels.fill((255, 255, 255))
+    pixels.show()
+            
 def main(args=None):
     rclpy.init(args=args)
 
