@@ -5,9 +5,10 @@ from std_msgs.msg import String
 class test_visual_cortex(Node):
     
     #value's for anlge, distance and detected
-    angle = 3.7
-    distance = 1.1
-    detected = 0
+    angle = [3.7, 0.0, 0.0, 0.0, -4.3, -4.2]
+    distance = [1.1, 123.0, 123.0, 123.0, 2.2, 3.3]
+    detected = [0, 1, 1, 1, 1, 1]
+    idx = 0
     
     def __init__(self):
         super().__init__(type(self).__name__) #give this node the name of the class
@@ -26,14 +27,17 @@ class test_visual_cortex(Node):
     def publish_camera_info(self):
         #create msg
         msg = String()
-        msg.data += str(self.angle)
+        msg.data += str(self.angle[self.idx])
         msg.data += ";" 
-        msg.data += str(self.distance)
+        msg.data += str(self.distance[self.idx])
         msg.data += ";"
-        msg.data += str(self.detected)
+        msg.data += str(self.detected[self.idx])
         #publish msg
         self.test_publisher.publish(msg)
         self.get_logger().info(f"Publishing a msg: {msg}")
+        self.idx += 1
+        if(self.idx == len(self.angle)):
+            self.idx = 0
 
         
 
