@@ -25,7 +25,8 @@ setup(
             'vel_publisher = test_nodes.vel_publisher:main',
             'keyboard_reader = test_nodes.keyboard_reader:main',
             'visual_cortex = test_nodes.visual_cortex:main' ,
-            'lidarInput = test_nodes.lidarInput:main'
+            'lidarInput = test_nodes.lidarInput:main',
+            'ledSub' = 'test_nodes.ws2812b_subscriber:main'
         ],
     },
 )
