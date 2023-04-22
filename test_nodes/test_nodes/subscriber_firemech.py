@@ -25,7 +25,7 @@ class MinimalSubscriber(Node):
 
             GPIO.output(Motoren, GPIO.LOW)
         else:
-
+	    GPIO.output(Motoren, GPIO.LOW)
               # voor als er iets zou misgaan met de messages
 
             GPIO.output(Motoren, GPIO.LOW)
