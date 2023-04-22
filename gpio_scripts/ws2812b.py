@@ -5,7 +5,8 @@
 import time
 import board
 import neopixel
-import adafruit_led_animation
+from adafruit_led_animation.animation import *
+from adafruit_led_animation.color import *
 
 # Choose an open pin connected to the Data In of the NeoPixel strip, i.e. board.D18
 # NeoPixels must be connected to D10, D12, D18 or D21 to work.
