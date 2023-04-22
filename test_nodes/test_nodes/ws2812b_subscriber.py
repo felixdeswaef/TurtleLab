@@ -62,16 +62,16 @@ class MinimalSubscriber(Node):
     def listener_callback(self, msg):
         self.get_logger().info('leds: "%s"' % msg.data)
         
-        if(msg.data == 'driving'):
+        if msg.data == 'driving':
             anim = 0
             
-        elif(msg.data == 'detected'):
+        elif msg.data == 'detected':
             anim = 1
             
-        elif(msg.data == 'spooling'):
+        elif msg.data == 'spooling':
             anim = 2
             
-        elif(msg.data == 'firing'):
+        elif msg.data == 'firing':
             anim = 3
 
 def anim0():
@@ -95,6 +95,15 @@ def main(args=None):
     minimal_subscriber = MinimalSubscriber()
 
     rclpy.spin(minimal_subscriber)
+    
+    if anim == 0:
+        anim0()
+    elif anim == 1:
+        anim1()
+    elif anim == 2:
+        anim2()
+    else anim == 3:
+        anim3()
 
     # Destroy the node explicitly
     # (optional - otherwise it will be done automatically
