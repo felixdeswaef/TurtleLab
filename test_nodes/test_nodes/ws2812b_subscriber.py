@@ -7,7 +7,12 @@ from std_msgs.msg import String
 import time
 import board
 import neopixel
+
+from adafruit_led_animation.color import *
+from adafruit_led_animation.animation.rainbow import Rainbow
 from adafruit_led_animation.animation.chase import Chase
+from adafruit_led_animation.animation.comet import Comet
+from adafruit_led_animation.color import *
 
 num_pixels = 34
 
@@ -17,36 +22,12 @@ pixels = neopixel.NeoPixel(
     pixel_pin, num_pixels, brightness=0.5, auto_write=False, pixel_order=ORDER
 )
 
-def colorwheel(pos):
-    if pos < 0 or pos > 255:
-        r = g = b = 0
-    elif pos < 85:
-        r = int(pos * 3)
-        g = int(255 - pos * 3)
-        b = 0
-    elif pos < 170:
-        pos -= 85
-        r = int(255 - pos * 3)
-        g = 0
-        b = int(pos * 3)
-    else:
-        pos -= 170
-        r = 0
-        g = int(pos * 3)
-        b = int(255 - pos * 3)
-    return (r, g, b) if ORDER in (neopixel.RGB, neopixel.GRB) else (r, g, b, 0)
+anim = 0
+rainbow = Rainbow(pixels, speed=0.1, period=3, step=5)
+comet = Comet(pixels, speed=0.1, color=PURPLE, tail_length=17, bounce=True)
+chase = Chase(pixels, speed=0.1, size=4, spacing=6, color=AMBER)
 
-
-def rainbow_cycle(wait):
-    for j in range(255):
-        for i in range(num_pixels):
-            pixel_index = (i * 256 // num_pixels) + j
-            pixels[i] = colorwheel(pixel_index & 255)
-        pixels.show()
-        time.sleep(wait)
-        
-# TODO: add multiple subscribers in this node to reflect status on LED's
-# http://docs.ros.org/en/foxy/The-ROS2-Project/Contributing/Migration-Guide-Python.html
+solid = Solid(pixels, color=RED)
 
 class MinimalSubscriber(Node):
 
@@ -55,33 +36,25 @@ class MinimalSubscriber(Node):
 
         self.subscription = self.create_subscription(
             String,
-            'leds',
+            'bot_state',
             self.listener_callback,
             10)
         self.subscription  # prevent unused variable warning
 
     def listener_callback(self, msg):
-        self.get_logger().info('bot_state: "%s"' % msg.data)
+        #self.get_logger().info('bot_state: "%s"' % msg.data)
         
         if msg.data == 'driving':
-            anim = 0
-            
-        elif msg.data == 'detected':
             anim = 1
             
-        elif msg.data == 'shoot':
+        elif msg.data == 'detected':
             anim = 2
-
-def anim0():
-    rainbow_cycle(0.005)
-
-def anim1():
-    pixels.fill((255, 127, 0))
-    pixels.show()
-
-def anim2():
-    pixels.fill((255, 255, 255))
-    pixels.show()
+            
+        elif msg.data == 'shoot':
+            anim = 3
+        # Unknown data -> solid red
+        else:
+            anim = 0
             
 def main(args=None):
     rclpy.init(args=args)
@@ -90,12 +63,14 @@ def main(args=None):
 
     rclpy.spin(minimal_subscriber)
     
-    if anim == 0:
-        anim0()
-    elif anim == 1:
-        anim1()
+    if anim == 1:
+        rainbow.animate()
     elif anim == 2:
-        anim2()
+        comet.animate()
+    elif anim == 3:
+        chase.animate()
+    else:
+        solid.animate()
 
     # Destroy the node explicitly
     # (optional - otherwise it will be done automatically
