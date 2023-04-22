@@ -98,6 +98,28 @@ class MovementPublisher(Node):
         if(detected == 1):
             #update msgs to /bot_state topic
             self.bot_state = "detected"
+            #aiming 
+            if(angle > 1):
+                #try to aim at the other bot
+                self.angular_x = 0.0
+                self.angular_y = 0.0
+                self.angular_z = -0.5 #left-right control
+            elif(angle < -1):
+                #try to aim at the other bot
+                self.angular_x = 0.0
+                self.angular_y = 0.0
+                self.angular_z = 0.5 #left-right control
+            else:
+                if(distance > 100):
+                    #get closer to enemy bot, charge forward!
+                    self.linear_x = -1.0 #forward-backward control
+                    self.linear_y = 0.0
+                    self.linear_z = 0.0
+                else:
+                    #close enough, stand still
+                    self.linear_x = 0.0 #forward-backward control
+                    self.linear_y = 0.0
+                    self.linear_z = 0.0
         else:
             #search enemy bot, start rotating by changing msgs to /cmd_vel topic
             self.linear_x = 0.0 #forward-backward control
@@ -105,29 +127,9 @@ class MovementPublisher(Node):
             self.linear_z = 0.0
             self.angular_x = 0.0
             self.angular_y = 0.0
-            self.angular_z = 1.0 #left-right control
+            self.angular_z = 1.0 #rotate left
             
-        if(angle > 1):
-            #try to aim at the other bot
-            self.angular_x = 0.0
-            self.angular_y = 0.0
-            self.angular_z = 0.5 #left-right control
-        elif(angle < -1):
-            #try to aim at the other bot
-            self.angular_x = 0.0
-            self.angular_y = 0.0
-            self.angular_z = -0.5 #left-right control
-        else:
-            if(distance > 100):
-                #get closer to enemy bot, charge forward!
-                self.linear_x = -1.0 #forward-backward control
-                self.linear_y = 0.0
-                self.linear_z = 0.0
-            else:
-                #close enough, stand still
-                self.linear_x = 0.0 #forward-backward control
-                self.linear_y = 0.0
-                self.linear_z = 0.0
+        
         
 
 def main(args=None):
