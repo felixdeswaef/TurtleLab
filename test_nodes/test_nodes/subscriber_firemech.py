@@ -28,7 +28,7 @@ class MinimalSubscriber(Node):
             time.sleep(2)
             servoLader_pwm.ChangeDutyCycle(10.5)
             time.sleep(0.5)
-            servoLader_pwm.ChangeDutyCycle(2.5)
+            servoLader_pwm.ChangeDutyCycle(2)
             time.sleep(0.5)
             servoLader_pwm.ChangeDutyCycle(10.5)
         
