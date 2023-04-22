@@ -41,7 +41,7 @@ class MinimalSubscriber(Node):
             10)
         self.subscription  # prevent unused variable warning
         
-        timer_period = 0.02  # 50Hz
+        timer_period = 0.01  # 100Hz
         self.timer = self.create_timer(timer_period, self.timer_callback)
 
     def listener_callback(self, msg):
@@ -64,14 +64,16 @@ class MinimalSubscriber(Node):
             self.get_logger().info('LEDS: UNKNOWN')
     
     def timer_callback(self):
-        if anim == 1:
-            rainbow.animate()
-        elif anim == 2:
-            comet.animate()
-        elif anim == 3:
-            chase.animate()
-        else:
-            solid.animate()
+        pixels.fill((255, 0, 0))
+        pixels.show()
+        #if anim == 1:
+        #    rainbow.animate()
+        #elif anim == 2:
+        #    comet.animate()
+        #elif anim == 3:
+        #    chase.animate()
+        #else:
+        #    solid.animate()
             
 def main(args=None):
     rclpy.init(args=args)
