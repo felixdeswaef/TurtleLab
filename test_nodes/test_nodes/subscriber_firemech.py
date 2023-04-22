@@ -12,7 +12,7 @@ Lader = 12
 GPIO.setup(Motoren, GPIO.OUT)
 GPIO.setup(Lader, GPIO.OUT)
 servoLader_pwm = GPIO.PWM(Lader,50)
-servoLader_pwm.start(7)
+servoLader_pwm.start(7.5)
 
 class MinimalSubscriber(Node):
 
@@ -26,11 +26,11 @@ class MinimalSubscriber(Node):
         if msg.data == 'activeren':
             #GPIO.output(Motoren, GPIO.HIGH)
             time.sleep(2)
-            servoLader_pwm.ChangeDutyCycle(2.5)
-            time.sleep(0.5)
             servoLader_pwm.ChangeDutyCycle(10.5)
             time.sleep(0.5)
             servoLader_pwm.ChangeDutyCycle(2.5)
+            time.sleep(0.5)
+            servoLader_pwm.ChangeDutyCycle(10.5)
         
         elif msg.data == 'deactiveren':
             GPIO.output(Motoren, GPIO.LOW)
