@@ -26,11 +26,11 @@ class test_visual_cortex(Node):
     def publish_camera_info(self):
         #create msg
         msg = String()
-        msg += String(self.angle)
-        msg += ";" 
-        msg += String(self.distance)
-        msg += ";"
-        msg += String(self.detected)
+        msg.data += str(self.angle)
+        msg.data += ";" 
+        msg.data += str(self.distance)
+        msg.data += ";"
+        msg.data += str(self.detected)
         #publish msg
         self.test_publisher.publish(msg)
         self.get_logger().info(f"Publishing a msg: {msg}")

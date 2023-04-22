@@ -51,6 +51,7 @@ class MinimalSubscriber(Node):
         self.timer = self.create_timer(timer_period, self.timer_callback)
 
     def listener_callback(self, msg):
+        global anim
         #self.get_logger().info('bot_state: "%s"' % msg.data)
         
         if msg.data == 'driving':
@@ -70,6 +71,9 @@ class MinimalSubscriber(Node):
             self.get_logger().info('LEDS: UNKNOWN')
     
     def timer_callback(self):
+        global bluestate
+        global anim
+        
         if bluestate == 0:
             GPIO.output(25, GPIO.HIGH)
             bluestate = 1
