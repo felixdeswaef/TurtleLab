@@ -32,17 +32,17 @@ class Visual_Cortex(Node):
                 if len(tvec)!=0:
                     afstand="{:.3f}".format(param*sqrt(tvec[0][0][0]**2+tvec[0][0][2]**2))             
                     h=corners[i][0][1]-corners[i][0][0]*self.hoek
-        return h,afstand,enemy
+        return len(ids)
 
     def timer_callback(self):
         ret, frame = self.camera.read()  # read a frame from the camera
         if not ret:
             self.get_logger().warning('Failed to read frame from camera')
             return
-        var1,var2,var3=self.pose_estimation()
+        var3=self.pose_estimation()
 
 
-        msg = msg.data = '0 8 true'
+        msg = msg.data = str(var3)
         self.publisher_.publish(msg)
         
 
