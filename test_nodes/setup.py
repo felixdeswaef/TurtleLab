@@ -26,6 +26,8 @@ setup(
             'keyboard_reader = test_nodes.keyboard_reader:main',
             'visual_cortex = test_nodes.visual_cortex:main',
             'lidarInput = test_nodes.lidarInput:main',
+            'movement_controller = test_nodes.movement_controller:main',
+            'test_visual_cortex = test_nodes.test_visual_cortex:main',
             'ledSub = test_nodes.ledSub:main'
         ],
     },
