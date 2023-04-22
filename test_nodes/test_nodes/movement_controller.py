@@ -66,7 +66,7 @@ class MovementPublisher(Node):
         msg.angular.y = self.angular_y
         msg.angular.z = self.angular_z
         #publish msg
-        self.vel_publisher.publish(msg)
+        self.move_publisher.publish(msg)
         self.get_logger().info(f"Publishing a msg with msg:\nlinear:\n  x={msg.linear.x}\n  y={msg.linear.y}\n  z={msg.linear.z}\nangular:\n  x={msg.angular.x}\n  y={msg.angular.y}\n  z={msg.angular.z}\n")
         
     def publish_bot_state(self):
