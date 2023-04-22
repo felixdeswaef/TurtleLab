@@ -9,7 +9,7 @@ from adafruit_led_animation.animation.blink import Blink
 from adafruit_led_animation.animation.comet import Comet
 from adafruit_led_animation.animation.chase import Chase
 from adafruit_led_animation.sequence import AnimationSequence
-from adafruit_led_animation.color import *
+from adafruit_led_animation.color import PURPLE, AMBER, JADE
 
 # Choose an open pin connected to the Data In of the NeoPixel strip, i.e. board.D18
 # NeoPixels must be connected to D10, D12, D18 or D21 to work.
@@ -26,8 +26,11 @@ pixels = neopixel.NeoPixel(
     pixel_pin, num_pixels, brightness=0.5, auto_write=False, pixel_order=ORDER
 )
 
-chase = Comet(pixels, speed=0.5, color=ORANGE, tail_length=(num_pixels/2), bounce=True)
-pulse = Pulse(pixels, speed=0.1, color=AMBER, period=3)
+blink = Blink(pixels, speed=0.5, color=JADE)
+comet = Comet(pixels, speed=0.01, color=PURPLE, tail_length=10, bounce=True)
+chase = Chase(pixels, speed=0.1, size=3, spacing=6, color=AMBER)
+
+animations = AnimationSequence(blink, comet, chase, advance_interval=3, auto_clear=True)
 
 def wheel(pos):
     # Input a value 0 to 255 to get a color value.
@@ -82,4 +85,4 @@ while True:
     # pixels.show()
     # time.sleep(1)
     # rainbow_cycle(0.005)  # rainbow cycle with 5ms delay per step
-    chase.animate()
+    animations.animate()
