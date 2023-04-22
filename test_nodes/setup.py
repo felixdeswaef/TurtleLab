@@ -24,7 +24,8 @@ setup(
             'listener = test_nodes.subscriber_firemech:main',
             'vel_publisher = test_nodes.vel_publisher:main',
             'keyboard_reader = test_nodes.keyboard_reader:main',
-            'visual_cortex = test_nodes.visual_cortex:main'  
+            'visual_cortex = test_nodes.visual_cortex:main' ,
+            'lidarInput = test_nodes.lidarInput:main'
         ],
     },
 )
