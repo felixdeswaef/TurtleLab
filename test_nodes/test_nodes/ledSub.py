@@ -39,8 +39,8 @@ class pixelNode(Node):
             self.listener_callback,
             10)
         self.subscription  # prevent unused variable warning
-        self.pixels = neopixel.NeoPixel(pixel_pin, num_pixels, brightness=0.5, auto_write=False, pixel_order=ORDER
-)       self.pixels.fill((255, 0, 0))
+        self.pixels = neopixel.NeoPixel(pixel_pin, num_pixels, brightness=0.5, auto_write=False, pixel_order=ORDER)
+        self.pixels.fill((255, 0, 0))
         self.pixels.show()
         
         # blue led blinker
