@@ -6,3 +6,6 @@ gitkey2.pub
 
 #.swp files
 *.swp
+
+#temp files
+__pycache__/

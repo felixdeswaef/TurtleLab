@@ -23,13 +23,13 @@ class MinimalSubscriber(Node):
 
     def listener_callback(self, msg):
     	if(msg.data == 'activeren'):
-           GPIO.output(Motoren, GPIO.HIGH)
+            GPIO.output(Motoren, GPIO.HIGH)
 
         elif(msg.data == 'deactiveren'):
-           GPIO.output(Motoren, GPIO.LOW)
+            GPIO.output(Motoren, GPIO.LOW)
            
         else: #voor als er iets zou misgaan met de messages
-           GPIO.output(Motoren, GPIO.LOW)
+            GPIO.output(Motoren, GPIO.LOW)
         self.get_logger().info('I heard: "%s"' % msg.data)
 
 
