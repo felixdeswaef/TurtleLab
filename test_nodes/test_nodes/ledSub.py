@@ -2,11 +2,16 @@
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import String
+import RPi.GPIO as GPIO
+import time
 
 # LED dependencies
 import time
 import board
 import neopixel
+
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(25, GPIO.OUT)
 
 #from adafruit_led_animation.color import *
 #from adafruit_led_animation.animation.rainbow import Rainbow
@@ -23,6 +28,7 @@ pixels = neopixel.NeoPixel(
     pixel_pin, num_pixels, brightness=0.5, auto_write=False, pixel_order=ORDER
 )
 
+bluestate = 0
 anim = 0
 #rainbow = Rainbow(pixels, speed=0.1, period=3, step=5)
 #comet = Comet(pixels, speed=0.1, color=PURPLE, tail_length=17, bounce=True)
@@ -41,7 +47,7 @@ class MinimalSubscriber(Node):
             10)
         self.subscription  # prevent unused variable warning
         
-        timer_period = 0.01  # 100Hz
+        timer_period = 0.5  # 2Hz
         self.timer = self.create_timer(timer_period, self.timer_callback)
 
     def listener_callback(self, msg):
@@ -64,9 +70,15 @@ class MinimalSubscriber(Node):
             self.get_logger().info('LEDS: UNKNOWN')
     
     def timer_callback(self):
+        if bluestate == 0:
+            GPIO.output(25, GPIO.HIGH)
+            bluestate = 1
+        else:
+            GPIO.output(25, GPIO.LOW)
+            bluestate = 0
 
-        pixels.fill((255, 0, 0))
-        pixels.show()
+        #pixels.fill((255, 0, 0))
+        #pixels.show()
         #if anim == 1:
         #    rainbow.animate()
         #elif anim == 2:
