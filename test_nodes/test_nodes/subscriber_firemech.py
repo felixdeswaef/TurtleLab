@@ -12,7 +12,7 @@ Lader = 12
 GPIO.setup(Motoren, GPIO.OUT)
 GPIO.setup(Lader, GPIO.OUT)
 servoLader_pwm = GPIO.PWM(Lader,50)
-servoLader_pwm.start(0)
+servoLader_pwm.start(7.5)
 
 class MinimalSubscriber(Node):
 
