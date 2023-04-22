@@ -8,12 +8,12 @@ import time
 import board
 import neopixel
 
-from adafruit_led_animation.color import *
-from adafruit_led_animation.animation.rainbow import Rainbow
-from adafruit_led_animation.animation.chase import Chase
-from adafruit_led_animation.animation.comet import Comet
-from adafruit_led_animation.animation.solid import Solid
-from adafruit_led_animation.color import *
+#from adafruit_led_animation.color import *
+#from adafruit_led_animation.animation.rainbow import Rainbow
+#from adafruit_led_animation.animation.chase import Chase
+#from adafruit_led_animation.animation.comet import Comet
+#from adafruit_led_animation.animation.solid import Solid
+#from adafruit_led_animation.color import *
 
 num_pixels = 34
 
@@ -24,10 +24,10 @@ pixels = neopixel.NeoPixel(
 )
 
 anim = 0
-rainbow = Rainbow(pixels, speed=0.1, period=3, step=5)
-comet = Comet(pixels, speed=0.1, color=PURPLE, tail_length=17, bounce=True)
-chase = Chase(pixels, speed=0.1, size=4, spacing=6, color=AMBER)
-solid = Solid(pixels, color=RED)
+#rainbow = Rainbow(pixels, speed=0.1, period=3, step=5)
+#comet = Comet(pixels, speed=0.1, color=PURPLE, tail_length=17, bounce=True)
+#chase = Chase(pixels, speed=0.1, size=4, spacing=6, color=AMBER)
+#solid = Solid(pixels, color=RED)
 
 class MinimalSubscriber(Node):
 
@@ -64,6 +64,7 @@ class MinimalSubscriber(Node):
             self.get_logger().info('LEDS: UNKNOWN')
     
     def timer_callback(self):
+
         pixels.fill((255, 0, 0))
         pixels.show()
         #if anim == 1:
