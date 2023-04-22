@@ -23,9 +23,9 @@ class MinimalSubscriber(Node):
         self.subscription  # prevent unused variable warning
 
     def listener_callback(self, msg):
-        if msg.data == 'activeren':
+        if msg.data == 'shoot':
             GPIO.output(Motoren, GPIO.HIGH)
-            time.sleep(2)
+            time.sleep(1)
             servoLader_pwm.ChangeDutyCycle(10.5)
             time.sleep(0.5)
             servoLader_pwm.ChangeDutyCycle(2)

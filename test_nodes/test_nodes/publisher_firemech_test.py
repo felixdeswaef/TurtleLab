@@ -15,13 +15,9 @@ class MinimalPublisher(Node):
 
     def timer_callback(self):
         msg = String()
-        
-        if (self.state):        
-          msg.data = 'activeren'
-          self.publisher_.publish(msg)
-        else:
-          msg.data = 'deactiveren'
-          self.publisher_.publish(msg)
+                
+        msg.data = 'shoot'
+        self.publisher_.publish(msg)
           
         self.get_logger().info('Publishing: "%s"' % msg.data)
         self.state = not self.state
