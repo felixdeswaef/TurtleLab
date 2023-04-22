@@ -6,7 +6,7 @@ from adafruit_led_animation.animation.comet import Comet
 from adafruit_led_animation.animation.chase import Chase
 from adafruit_led_animation.animation.rainbow import Rainbow
 from adafruit_led_animation.sequence import AnimationSequence
-from adafruit_led_animation.color import PURPLE, AMBER, JADE, WHITE
+from adafruit_led_animation.color import PURPLE, AMBER, JADE, CYAN
 
 pixel_pin = board.D18
 num_pixels = 34
@@ -16,7 +16,7 @@ pixels = neopixel.NeoPixel(
     pixel_pin, num_pixels, brightness=0.5, auto_write=False, pixel_order=ORDER
 )
 
-blink = Blink(pixels, speed=0.1, color=WHITE)
+blink = Blink(pixels, speed=0.1, color=CYAN)
 comet = Comet(pixels, speed=0.1, color=PURPLE, tail_length=(num_pixels/2), bounce=True)
 chase = Chase(pixels, speed=0.1, size=4, spacing=6, color=AMBER)
 rainbow = Rainbow(pixels, speed=0.1, period=2)
