@@ -41,7 +41,7 @@ class MinimalSubscriber(Node):
             10)
         self.subscription  # prevent unused variable warning
         
-        timer_period = 0.02  # 50Hz
+        timer_period = 0.1  # 50Hz
         self.timer = self.create_timer(timer_period, self.timer_callback)
 
     def listener_callback(self, msg):
