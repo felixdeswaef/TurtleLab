@@ -8,12 +8,12 @@ import time
 import board
 import neopixel
 
-num_pixels = 20
+num_pixels = 34
 
 pixel_pin = board.D18
 ORDER = neopixel.GRB
 pixels = neopixel.NeoPixel(
-    pixel_pin, num_pixels, brightness=0.1, auto_write=False, pixel_order=ORDER
+    pixel_pin, num_pixels, brightness=0.5, auto_write=False, pixel_order=ORDER
 )
 
 def colorwheel(pos):
@@ -55,13 +55,26 @@ class MinimalSubscriber(Node):
 
         self.subscription = self.create_subscription(
             String,
-            'detected',
+            'leds',
             self.listener_callback,
             10)
         self.subscription  # prevent unused variable warning
 
     def listener_callback(self, msg):
         self.get_logger().info('I heard: "%s"' % msg.data)
+        
+        if(msg.data == 'driving'):
+            rainbow_cycle(0.005)
+            
+        elif(msg.data == 'detected'):
+            pixels.fill((255, 127, 0))
+            pixels.show()
+            
+        elif(msg.data == 'spooling'):
+            pixels.fill((255, 0, 255))
+            pixels.show()
+            
+        elif(msg.data == 'firing'):
         
         # Set white for 1 second when code detection is triggered
         pixels.fill((255, 255, 255))
@@ -70,7 +83,7 @@ class MinimalSubscriber(Node):
         pixels.fill((0, 0, 0))
         pixels.show()
         
-        # rainbow_cycle(0.005)  # rainbow cycle with 5ms delay per step
+        #   # rainbow cycle with 5ms delay per step
 
         
 def main(args=None):
