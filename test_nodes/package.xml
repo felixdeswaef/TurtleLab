@@ -8,13 +8,13 @@
   <license>TODO: License declaration</license>
   <license>Apache License 2.0</license>
 
+  <!--  voor keyboard_reader-->
   <exec_depend>sys</exec_depend>
   <exec_depend>select</exec_depend>
   <exec_depend>termios</exec_depend>
   <exec_depend>tty</exec_depend>
-  <exec_depend>rclpy</exec_depend>
-  <exec_depend>std_msgs</exec_depend>
-  <exec_depend>python3-opencv</exec_depend>  <!--  voor visual system --> 
+  <!--  voor visual system -->
+  <exec_depend>python3-opencv</exec_depend>  
 
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>
