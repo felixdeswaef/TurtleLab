@@ -23,17 +23,17 @@ class MinimalSubscriber(Node):
 
     def listener_callback(self, msg):
         if msg.data == 'activeren':
-            GPIO.output(Motoren, GPIO.HIGH)
-            sleep(1)
+            #GPIO.output(Motoren, GPIO.HIGH)
+            time.sleep(1)
             servoLader_pwm.ChangeDutyCycle(30)
-            sleep(0.5)
+            time.sleep(0.5)
             servoLader_pwm.ChangeDutyCycle(0)
         
         elif msg.data == 'deactiveren':
-            GPIO.output(Motoren, GPIO.LOW)
+            #GPIO.output(Motoren, GPIO.LOW)
             
         else: # voor als er iets zou misgaan met de messages
-            GPIO.output(Motoren, GPIO.LOW)
+            #GPIO.output(Motoren, GPIO.LOW)
             
         self.get_logger().info('I heard: "%s"' % msg.data)
 
