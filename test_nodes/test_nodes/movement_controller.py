@@ -119,8 +119,8 @@ class MovementPublisher(Node):
             self.angular_z = -0.5 #left-right control
         else:
             if(distance > 100):
-                #come close to enemy bot, charge!
-                self.linear_x = 1.0 #forward-backward control
+                #get closer to enemy bot, charge forward!
+                self.linear_x = -1.0 #forward-backward control
                 self.linear_y = 0.0
                 self.linear_z = 0.0
             else:
