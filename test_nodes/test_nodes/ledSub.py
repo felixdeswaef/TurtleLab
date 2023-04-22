@@ -41,6 +41,7 @@ class pixelNode(Node):
         self.subscription  # prevent unused variable warning
         self.pixels = neopixel.NeoPixel(pixel_pin, num_pixels, brightness=0.5, auto_write=False, pixel_order=ORDER)
         self.pixels.fill((255, 0, 0))
+        self.pixels.show()
         
         # blue led blinker
         timer_period = 0.5  # 2Hz
@@ -62,6 +63,8 @@ class pixelNode(Node):
         else:
             self.pixels.fill((255, 0, 0))
             self.get_logger().info('LEDS: UNKNOWN')
+        
+        self.pixels.show()
         
     def timer_callback(self):
         global bluestate
