@@ -5,8 +5,7 @@
 import time
 import board
 import neopixel
-from adafruit_led_animation.animation import *
-from adafruit_led_animation.color import *
+import adafruit_led_animation
 
 # Choose an open pin connected to the Data In of the NeoPixel strip, i.e. board.D18
 # NeoPixels must be connected to D10, D12, D18 or D21 to work.
@@ -25,7 +24,6 @@ pixels = neopixel.NeoPixel(
 
 chase = Comet(pixels, speed=0.5, color=ORANGE, tail_length=(num_pixels/2), bounce=True)
 pulse = Pulse(pixels, speed=0.5, color=AMBER, period=3)
-comet = Comet(pixels, speed=0.1, color=PURPLE, tail_length=10, bounce=True)
 
 def wheel(pos):
     # Input a value 0 to 255 to get a color value.
