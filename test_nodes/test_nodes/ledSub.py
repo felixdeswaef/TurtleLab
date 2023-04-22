@@ -30,7 +30,7 @@ bluestate = 0
 #chase = Chase(pixels, speed=0.1, size=4, spacing=6, color=AMBER)
 #solid = Solid(pixels, color=RED)
 
-class MinimalSubscriber(Node):
+class pixelNode(Node):
 
     def __init__(self):
         global num_pixels
