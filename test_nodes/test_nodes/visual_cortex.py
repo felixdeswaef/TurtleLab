@@ -13,12 +13,13 @@ class Visual_Cortex(Node):
         self.dictionary = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_4X4_50)
         self.cm = [[823.93985557  , 0.      ,   322.76228491],[  0.    ,     825.11141958 ,279.6240493 ],[  0.    ,       0.      ,     1.        ]]
         self.parameters = cv2.aruco.DetectorParameters()
+        self.ms=0.05
         self.detector = cv2.aruco.ArucoDetector(self.dictionary, self.parameters)
         self.dm = [[ 6.29137073e-02 ,-7.33484417e-01  ,6.53444356e-03 , 3.83894903e-03, 1.16325776e+01]]
         self.hoek=45            #nog te testen 
         self.timer = self.create_timer(0.3, self.timer_callback)  # process the vid every 1 second
-    def my_estimatePoseSingleMarkers(corners, marker_size, mtx, distortion):
-
+    def my_estimatePoseSingleMarkers(self,corners):
+        marker_size=self.ms
         marker_points = np.array([[-marker_size / 2, marker_size / 2, 0],
                               [marker_size / 2, marker_size / 2, 0],
                               [marker_size / 2, -marker_size / 2, 0],
@@ -28,7 +29,7 @@ class Visual_Cortex(Node):
         tvecs = []
         i = 0
         for c in corners:
-            nada, R, t = cv2.solvePnP(marker_points, corners[i], mtx, distortion, False, cv2.SOLVEPNP_IPPE_SQUARE)
+            nada, R, t = cv2.solvePnP(marker_points, corners[i], self.cm, self.dm, False, cv2.SOLVEPNP_IPPE_SQUARE)
             rvecs.append(R)
             tvecs.append(t)
             trash.append(nada)
@@ -43,7 +44,7 @@ class Visual_Cortex(Node):
         self.get_logger().warning(corners)
         if len(corners) > 0:    
             for i in range(0, len(ids)):
-                rvec, tvec, rejimp= self.my_estimatePoseSingleMarkers(corners[i], 50, self.cm, self.dm)
+                rvec, tvec, rejimp= self.my_estimatePoseSingleMarkers(corners[i])
                 if len(tvec)!=0:
                     afstand="{:.3f}".format(param*sqrt(tvec[0][0]**2+tvec[0][2]**2))             
                     h=corners[i][0][1]-corners[i][0][0]*self.hoek
