@@ -21,9 +21,8 @@ class Visual_Cortex(Node):
 
     def pose_estimation(self,frame):
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        corners, ids, rejected_img_points = self.detector.detectMarkers(gray, self.dictionary,parameters=self.parameters,
-        cameraMatrix=self.cm,
-        distCoeff=self.dm)
+        corners, ids, rejected_img_points = self.detector.detectMarkers(gray, cameraMatrix=self.cm,
+                                                                        distCoeff=self.dm)
         param=2.4
         enemy=False
         if len(corners) > 0:
