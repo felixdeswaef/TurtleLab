@@ -44,7 +44,7 @@ After you have written some code on your laptop and you have pushed this code to
 - pull the changes from the remote git repo with `git pull`
 - go back to the turtlebot_ws folder `cd ..` and build the project with `colcon build` (hint you can also build one specific package with `colcon build --packages-select my_package`, this is way faster.)
 - run your nodes with `ros2 run pkg_name node_name`<br/>
-Note: If you are using depencies on the bot from other git repos, venvs, large files,... -> add them to the **.gitignore** file.
+Note: If you are using depencies on the bot from other git repos, venvs, large files,... -> add them to the **.gitignore** file.<br/>
 Note: make sure the ros2 turtlebot bringup is already running to init all things turtlebot:
 - Connect to the turtlebot with `ssh ubuntu@192.168.5.5`
 - enter the psswd that is very secret ...

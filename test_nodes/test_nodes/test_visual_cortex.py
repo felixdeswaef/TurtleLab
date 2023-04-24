@@ -34,13 +34,12 @@ class test_visual_cortex(Node):
         msg.data += str(self.detected[self.idx])
         #publish msg
         self.test_publisher.publish(msg)
-        self.get_logger().info(f"Publishing a msg: {msg}")
+        self.get_logger().info(f"Publishing a msg: {msg.data}")
         self.idx += 1
         if(self.idx == len(self.angle)):
             self.idx = 0
 
         
-
 def main(args=None):
     rclpy.init(args=args)
     #make new publisher object

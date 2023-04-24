@@ -6,12 +6,12 @@ def generate_launch_description():
     return LaunchDescription([
         Node(
             package='test_nodes',
-            executable='vel_publisher',
-            name='vel_publisher'
+            executable='test_visual_cortex',
+            name='test_visual_cortex'
         ),
         Node(
             package='test_nodes',
-            executable='keyboard_reader',
-            name='keyboard_reader'
+            executable='movement_controller',
+            name='movement_controller'
         ),
     ])

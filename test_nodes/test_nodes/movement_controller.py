@@ -57,6 +57,10 @@ class MovementPublisher(Node):
         )
 
     def publish_velocity(self):
+        """
+        Callback function to publish to the /cmd_vel topic
+        Output format: type Twist, msg.linear and msg.angular contains floats to change velocity of turtlebot 
+        """
         #create msg
         msg = Twist()
         msg.linear.x = self.linear_x
@@ -72,7 +76,7 @@ class MovementPublisher(Node):
     def publish_bot_state(self):
         """
         Callback function to publish to the /bot_state topic
-        Ouput format: msg.data="<state>"
+        Ouput format: type String, msg.data="<state>"
         <state> is a String with possible values "driving", "detected", "shoot"
         """
         msg = String()
@@ -83,7 +87,7 @@ class MovementPublisher(Node):
     def camera_processor(self, msg:String):
         """
         Callback function to process the information sent from the /camera_info topic
-        Input format : msg.data="<angle>;<distance>;<detected>"
+        Input format : type String, msg.data="<angle>;<distance>;<detected>"
         <angle> is a float that represents the angle in degrees (positive is right, negative is left)
         <distance> is a float that represents the distance to the other bot in cm
         <detected> is ann int 0->False, 1->True
@@ -98,17 +102,24 @@ class MovementPublisher(Node):
         if(detected == 1):
             #update msgs to /bot_state topic
             self.bot_state = "detected"
+            #reset movement
+            self.linear_x = 0.0 
+            self.linear_y = 0.0
+            self.linear_z = 0.0
+            self.angular_x = 0.0
+            self.angular_y = 0.0
+            self.angular_z = 0.0 
             #aiming 
             if(angle > 1):
                 #try to aim at the other bot
                 self.angular_x = 0.0
                 self.angular_y = 0.0
-                self.angular_z = -0.5 #left-right control
+                self.angular_z = -0.5 
             elif(angle < -1):
                 #try to aim at the other bot
                 self.angular_x = 0.0
                 self.angular_y = 0.0
-                self.angular_z = 0.5 #left-right control
+                self.angular_z = 0.5
             else:
                 if(distance > 50):
                     #get closer to enemy bot, charge forward!
@@ -123,15 +134,12 @@ class MovementPublisher(Node):
                     self.bot_state = "shoot" #fire!
         else:
             #search enemy bot, start rotating by changing msgs to /cmd_vel topic
-            self.linear_x = 0.0 #forward-backward control
+            self.linear_x = 0.0 
             self.linear_y = 0.0
             self.linear_z = 0.0
             self.angular_x = 0.0
             self.angular_y = 0.0
-            self.angular_z = 0.5 #rotate left
-            
-        
-        
+            self.angular_z = 0.5 #rotate left     
 
 def main(args=None):
     rclpy.init(args=args)
