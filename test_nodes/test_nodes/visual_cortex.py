@@ -39,7 +39,6 @@ class Visual_Cortex(Node):
             self.get_logger().warning('Failed to read frame from camera')
             return
         var3=self.pose_estimation(frame)
-        var3=cv2.__version__
         msg=String()
         msg.data = str(var3)
         self.publisher_.publish(msg)
