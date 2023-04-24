@@ -40,7 +40,7 @@ class Visual_Cortex(Node):
             return
         var3=self.pose_estimation(frame)
 
-
+        msg=String()
         msg = msg.data = str(var3)
         self.publisher_.publish(msg)
         
