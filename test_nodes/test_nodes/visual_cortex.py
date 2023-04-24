@@ -24,14 +24,14 @@ class Visual_Cortex(Node):
         corners, ids, rejected_img_points = self.detector.detectMarkers(gray)
         param=2.4
         enemy=False
-        if len(corners) > 0:
+        if len(corners) > 0:    
             for i in range(0, len(ids)):
                 rvec, tvec, markerPoints = cv2.aruco.estimatePoseSingleMarkers(corners[i], 0.02, self.cm, self.dm)
                 cv2.aruco.drawDetectedMarkers(frame, corners) 
                 if len(tvec)!=0:
                     afstand="{:.3f}".format(param*sqrt(tvec[0][0][0]**2+tvec[0][0][2]**2))             
                     h=corners[i][0][1]-corners[i][0][0]*self.hoek
-        return len(ids)
+        return len(corners)
 
     def timer_callback(self):
         ret, frame = self.camera.read()  # read a frame from the camera
