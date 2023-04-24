@@ -11,11 +11,11 @@ class Visual_Cortex(Node):
         self.publisher_ = self.create_publisher(String, 'enemy_position', 10)
         self.camera = cv2.VideoCapture(0)
         self.dictionary = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_4X4_50)
-        self.cm = [[823.93985557  , 0.      ,   322.76228491],[  0.    ,     825.11141958 ,279.6240493 ],[  0.    ,       0.      ,     1.        ]]
+        self.cm = np.array([[823.93985557  , 0.      ,   322.76228491],[  0.    ,     825.11141958 ,279.6240493 ],[  0.    ,       0.      ,     1.        ]])
         self.parameters = cv2.aruco.DetectorParameters()
         self.ms=0.05
         self.detector = cv2.aruco.ArucoDetector(self.dictionary, self.parameters)
-        self.dm = [[ 6.29137073e-02 ,-7.33484417e-01  ,6.53444356e-03 , 3.83894903e-03, 1.16325776e+01]]
+        self.dm = np.array([[ 6.29137073e-02 ,-7.33484417e-01  ,6.53444356e-03 , 3.83894903e-03, 1.16325776e+01]])
         self.hoek=45            #nog te testen 
         self.timer = self.create_timer(0.3, self.timer_callback)  # process the vid every 1 second
     def my_estimatePoseSingleMarkers(self,corners):
