@@ -1,93 +1,39 @@
-# Subscriber dependencies
+# Sources:
+# https://github.com/DamAnirban/WS2812B_ros/blob/master/light_ros.py
+# https://github.com/machinekoder/neopixel_ring/blob/master/neopixel_ring/neopixel_node.py
+# https://answers.ros.org/question/414293/how-to-use-ws2812b-led-lights-with-ros-2-node/
+
+# Dependencies
+# pip install rpi-ws281x
+
 import rclpy
-from rclpy.node import Node
-from std_msgs.msg import String
-import RPi.GPIO as GPIO
-import time
+from std_msgs.msg import ColorRGBA
+from rpi_ws281x import Adafruit_NeoPixel, Color
 
-# LED dependencies
-import time
-import board
-import neopixel
+# Define the number of WS2812B LED lights and the pin they are connected to
+NUM_LEDS = 34  # Number of LED
+LED_PIN = 18  # 0- number will form a color
 
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(25, GPIO.OUT)
+# Initialize the WS2812B LED lights
+strip = Adafruit_NeoPixel(NUM_LEDS, LED_PIN)
+strip.begin()
+strip.show()
 
-#from adafruit_led_animation.color import *
-#from adafruit_led_animation.animation.rainbow import Rainbow
-#from adafruit_led_animation.animation.chase import Chase
-#from adafruit_led_animation.animation.comet import Comet
-#from adafruit_led_animation.animation.solid import Solid
-#from adafruit_led_animation.color import *
+# Callback function for the color message
+def color_callback(msg):
+    # Set the color of all the WS2812B LED lights
+    for i in range(NUM_LEDS):
+        strip.setPixelColor(i, Color(int(msg.r * 255), int(msg.g * 255), int(msg.b * 255)))
+    strip.show()
 
-
-
-bluestate = 0
-#rainbow = Rainbow(pixels, speed=0.1, period=3, step=5)
-#comet = Comet(pixels, speed=0.1, color=PURPLE, tail_length=17, bounce=True)
-#chase = Chase(pixels, speed=0.1, size=4, spacing=6, color=AMBER)
-#solid = Solid(pixels, color=RED)
-
-class pixelNode(Node):
-
-    def __init__(self, pixel_pin = board.D18, num_pixels = 34, ORDER = neopixel.GRB):       
-        super().__init__('pixel_node')
-
-        self.subscription = self.create_subscription(
-            String,
-            'bot_state',
-            self.listener_callback,
-            10)
-        self.subscription  # prevent unused variable warning
-        self.pixels = neopixel.NeoPixel(pixel_pin, num_pixels, brightness=0.5, auto_write=False, pixel_order=ORDER)
-        self.pixels.fill((255, 0, 0))
-        self.pixels.show()
-        
-        # blue led blinker
-        timer_period = 0.5  # 2Hz
-        self.timer = self.create_timer(timer_period, self.timer_callback)
-
-    def listener_callback(self, msg):        
-        if msg.data == 'driving':
-            self.pixels.fill((255, 255, 255))
-            self.get_logger().info('LEDS: DRIVING')
-            
-        elif msg.data == 'detected':
-            self.pixels.fill((255, 127, 0))
-            self.get_logger().info('LEDS: DETECTED')
-            
-        elif msg.data == 'shoot':
-            self.pixels.fill((255, 0, 255))
-            self.get_logger().info('LEDS: SHOOT')
-
-        else:
-            self.pixels.fill((255, 0, 0))
-            self.get_logger().info('LEDS: UNKNOWN')
-        
-        self.pixels.show()
-        
-    def timer_callback(self):
-        global bluestate
-        
-        if bluestate == 0:
-            GPIO.output(25, GPIO.HIGH)
-            bluestate = 1
-        else:
-            GPIO.output(25, GPIO.LOW)
-            bluestate = 0       
-            
 def main(args=None):
     rclpy.init(args=args)
-
-    pixel_node = pixelNode()
-
-    rclpy.spin(pixel_node)
-
-    # Destroy the node explicitly
-    # (optional - otherwise it will be done automatically
-    # when the garbage collector destroys the node object)
-    pixel_node.destroy_node()
+    node = rclpy.create_node('minimal_subscriber')
+    subscription = node.create_subscription(ColorRGBA, 'color', color_callback, 10)
+    subscription  # prevent unused variable warning
+    rclpy.spin(node)
+    node.destroy_node()
     rclpy.shutdown()
-   
+
 if __name__ == '__main__':
     main()
