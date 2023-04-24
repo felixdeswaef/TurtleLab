@@ -17,7 +17,22 @@ class Visual_Cortex(Node):
         self.dm = [[ 6.29137073e-02 ,-7.33484417e-01  ,6.53444356e-03 , 3.83894903e-03, 1.16325776e+01]]
         self.hoek=45            #nog te testen 
         self.timer = self.create_timer(0.3, self.timer_callback)  # process the vid every 1 second
+    def my_estimatePoseSingleMarkers(corners, marker_size, mtx, distortion):
 
+        marker_points = np.array([[-marker_size / 2, marker_size / 2, 0],
+                              [marker_size / 2, marker_size / 2, 0],
+                              [marker_size / 2, -marker_size / 2, 0],
+                              [-marker_size / 2, -marker_size / 2, 0]], dtype=np.float32)
+        trash = []
+        rvecs = []
+        tvecs = []
+        i = 0
+        for c in corners:
+            nada, R, t = cv2.solvePnP(marker_points, corners[i], mtx, distortion, False, cv2.SOLVEPNP_IPPE_SQUARE)
+            rvecs.append(R)
+            tvecs.append(t)
+            trash.append(nada)
+        return rvecs, tvecs, trash
 
     def pose_estimation(self,frame):
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -26,12 +41,12 @@ class Visual_Cortex(Node):
         enemy=False
         if len(corners) > 0:    
             for i in range(0, len(ids)):
-                rvec, tvec, markerPoints = cv2.aruco.estimatePoseSingleMarkers(corners[i], 0.02, self.cm, self.dm)
-                cv2.aruco.drawDetectedMarkers(frame, corners) 
+                rvec, tvec, rejimp= self.my_estimatePoseSingleMarkers(corners[i], 50, self.cm, self.dm)
                 if len(tvec)!=0:
                     afstand="{:.3f}".format(param*sqrt(tvec[0][0][0]**2+tvec[0][0][2]**2))             
                     h=corners[i][0][1]-corners[i][0][0]*self.hoek
-        return len(corners)
+                    return afstand,h
+        return 0,0
 
     def timer_callback(self):
         ret, frame = self.camera.read()  # read a frame from the camera
