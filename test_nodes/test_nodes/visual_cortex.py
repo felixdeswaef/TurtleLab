@@ -41,7 +41,6 @@ class Visual_Cortex(Node):
         corners, ids, rejected_img_points = self.detector.detectMarkers(gray)
         param=2.4
         enemy=False
-        self.get_logger().warning(corners)
         if len(corners) > 0:    
             for i in range(0, len(ids)):
                 rvec, tvec, rejimp= self.my_estimatePoseSingleMarkers(corners[i])
