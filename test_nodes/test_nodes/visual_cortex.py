@@ -32,6 +32,7 @@ class Visual_Cortex(Node):
             rvecs.append(R)
             tvecs.append(t)
             trash.append(nada)
+
         return rvecs, tvecs, trash
 
     def pose_estimation(self,frame):
@@ -43,7 +44,7 @@ class Visual_Cortex(Node):
             for i in range(0, len(ids)):
                 rvec, tvec, rejimp= self.my_estimatePoseSingleMarkers(corners[i], 50, self.cm, self.dm)
                 if len(tvec)!=0:
-                    afstand="{:.3f}".format(param*sqrt(tvec[0][0][0]**2+tvec[0][0][2]**2))             
+                    afstand="{:.3f}".format(param*sqrt(tvec[0][0]**2+tvec[0][2]**2))             
                     h=corners[i][0][1]-corners[i][0][0]*self.hoek
                     return afstand,h
         return 0,0
