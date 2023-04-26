@@ -7,14 +7,14 @@ import time
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
-Motoren = 23
-Lader = 12
-GPIO.setup(Motoren, GPIO.OUT)
+Motoren = 23 #GPIO pin 23 voor de motoren
+Lader = 12 #GPIO pin 12 voor de laad servo
+GPIO.setup(Motoren, GPIO.OUT) #pin als output zetten
 GPIO.setup(Lader, GPIO.OUT)
-servoLader_pwm = GPIO.PWM(Lader,50)
-servoLader_pwm.start(7.5)
+servoLader_pwm = GPIO.PWM(Lader, 50) #servo frequency van 50Hz
+servoLader_pwm.start(7.5) #dit eventueel al op 10.5 zetten zodat dit niet meer in de lus hoeft gedaan te worden
 
-class MinimalSubscriber(Node):
+class Subscriber(Node):
 
     def __init__(self):
         super().__init__('minimal_subscriber')
@@ -25,13 +25,13 @@ class MinimalSubscriber(Node):
     def listener_callback(self, msg):
         if msg.data == 'shoot':
             GPIO.output(Motoren, GPIO.HIGH)
-            time.sleep(2)
-            servoLader_pwm.ChangeDutyCycle(10.5)
+            time.sleep(2) #timer van 2 seconden zodat de motoren op snelheid geraken
+            servoLader_pwm.ChangeDutyCycle(10.5) #servo van de lader eerst naar achter trekken zodat een pijlje in de loop kan vallen
             time.sleep(0.5)
-            servoLader_pwm.ChangeDutyCycle(2)
+            servoLader_pwm.ChangeDutyCycle(2) #servo naar voor duwen zodat het pijltje afgeschoten wordt
             time.sleep(0.5)
             GPIO.output(Motoren, GPIO.LOW)
-            servoLader_pwm.ChangeDutyCycle(10.5)
+            servoLader_pwm.ChangeDutyCycle(10.5) #servo terug naar achter trekken zodat een volgend pijltje geladen wordt
             
         else: # voor als er iets zou misgaan met de messages
             GPIO.output(Motoren, GPIO.LOW)
@@ -41,15 +41,11 @@ class MinimalSubscriber(Node):
 def main(args=None):
     rclpy.init(args=args)
 
-    Motor_subscriber = MinimalSubscriber()
+    FireMech_subscriber = Subscriber()
 
-    rclpy.spin(Motor_subscriber)
+    rclpy.spin(FireMech_subscriber)
 
-    # Destroy the node explicitly
-    # (optional - otherwise it will be done automatically
-    # when the garbage collector destroys the node object)
-
-    Motor_subscriber.destroy_node()
+    FireMech_subscriber.destroy_node()
     rclpy.shutdown()
 
 if __name__ == '__main__':
