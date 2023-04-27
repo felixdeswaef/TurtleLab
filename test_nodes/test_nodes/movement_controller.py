@@ -113,7 +113,7 @@ class MovementPublisher(Node):
         <distance> is a float that represents the distance to the other bot in m
         <detected> is an int 0->False, 1->True
         """
-        self.get_logger().info(f"Camera_processor received msg = {msg.data}")
+        #self.get_logger().info(f"Camera_processor received msg = {msg.data}")
         try:
             #parse msg
             distance, angle, detected = str(msg.data).split(";") 
