@@ -1,7 +1,7 @@
 import rclpy
 from rclpy.node import Node
 
-from std_msgs.msg import String
+from std_msgs.msg import Float64
 import RPi.GPIO as GPIO
 import time
 
@@ -16,17 +16,18 @@ class Subscriber(Node):
 
     def __init__(self):
         super().__init__('minimal_subscriber')
-        self.subscription = self.create_subscription(String, 'topic',
+        self.subscription = self.create_subscription(Float64, '/enemy_distance',
                 self.listener_callback, 10)
-        self.subscription  # prevent unused variable warning
+        self.subscription  #prevent unused variable warning
 
     def listener_callback(self, msg):
-        angle = 7.5 + msg.data/10
+        angle = 7.5 + float(msg.data)/10
         servoTilt_pwm.ChangeDutyCycle(angle)
         time.sleep(0.5)
-            
-        else: #als er even niet geschoten moet worden dan mag de servo terug in zijn midden positie komen
-            servoLader_pwm.ChangeDutyCycle(7.5)
+        
+        #als er even niet geschoten moet worden dan mag de servo terug
+        #in zijn midden positie komen
+        #servoLader_pwm.ChangeDutyCycle(7.5)
             
         self.get_logger().info('I heard: "%s"' % msg.data)
 
