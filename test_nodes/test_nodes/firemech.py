@@ -18,7 +18,7 @@ class Subscriber(Node):
 
     def __init__(self):
         super().__init__('minimal_subscriber')
-        self.subscription = self.create_subscription(String, 'topic',
+        self.subscription = self.create_subscription(String, '/bot_state',
                 self.listener_callback, 10)
         self.subscription  # prevent unused variable warning
 
