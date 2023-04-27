@@ -19,18 +19,45 @@ strip = Adafruit_NeoPixel(NUM_LEDS, LED_PIN)
 strip.begin()
 strip.show()
 
+bluestate = 0
+
 # Callback function for the color message
-def color_callback(msg):
-    # Set the color of all the WS2812B LED lights
-    for i in range(NUM_LEDS):
-        strip.setPixelColor(i, Color(int(msg.r * 255), int(msg.g * 255), int(msg.b * 255)))
+def led_callback(msg):
+    if msg.data == 'driving':
+        for i in range(NUM_LEDS):
+            strip.setPixelColor(i, Color(0, 255, 0))
+    elif msg.data == 'detected':
+        for i in range(NUM_LEDS):
+            strip.setPixelColor(i, Color(255, 255, 0))
+    elif msg.data == 'shoot':
+        for i in range(NUM_LEDS):
+            strip.setPixelColor(i, Color(255, 0, 0))
+    else:
+        for i in range(NUM_LEDS):
+            strip.setPixelColor(i, Color(255, 0, 255))
+    
     strip.show()
+    
+def timer_callback(self):
+    global bluestate
+    
+    if bluestate == 0:
+        GPIO.output(25, GPIO.HIGH)
+        bluestate = 1
+    else:
+        GPIO.output(25, GPIO.LOW)
+        bluestate = 0   
 
 def main(args=None):
     rclpy.init(args=args)
     node = rclpy.create_node('minimal_subscriber')
-    subscription = node.create_subscription(ColorRGBA, 'color', color_callback, 10)
+    subscription = node.create_subscription(String, 'bot_state', led_callback, 10)
     subscription  # prevent unused variable warning
+    
+    # blue led blinker
+    timer_period = 0.5  # 2Hz
+    timer = create_timer(timer_period, timer_callback)
+
     rclpy.spin(node)
     node.destroy_node()
     rclpy.shutdown()
