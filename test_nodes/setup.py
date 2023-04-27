@@ -28,7 +28,9 @@ setup(
             'lidarInput = test_nodes.lidarInput:main',
             'movement_controller = test_nodes.movement_controller:main',
             'test_visual_cortex = test_nodes.test_visual_cortex:main',
-            'ledSub = test_nodes.ledSub:main'
+            'ledSub = test_nodes.ledSub:main',
+            'angle = test_nodes.Angle_Firemech:main',
+            'publi2 = test_nodes.publisher_anglemech_test:main
         ],
     },
 )
