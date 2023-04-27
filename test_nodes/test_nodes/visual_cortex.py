@@ -51,7 +51,7 @@ class Visual_Cortex(Node):
                     afstand=sqrt(tvec[0][0]**2+tvec[0][2]**2) 
                     h=tan(tvec[0][0]/tvec[0][2])       
                     return afstand,h,1
-        return 0,0,0
+        return 1.5,0,0
 
     def timer_callback(self):
         ret, frame = self.camera.read()  # read a frame from the camera
