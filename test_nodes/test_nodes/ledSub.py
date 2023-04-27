@@ -51,7 +51,7 @@ def timer_callback(self):
 def main(args=None):
     rclpy.init(args=args)
     node = rclpy.create_node('minimal_subscriber')
-    subscription = node.create_subscription(String, 'bot_state', led_callback, 10)
+    subscription = node.create_subscription(String, '/bot_state', led_callback, 10)
     subscription  # prevent unused variable warning
     
     # blue led blinker
