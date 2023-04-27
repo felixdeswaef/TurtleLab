@@ -71,7 +71,7 @@ class MovementPublisher(Node):
         msg.angular.z = self.angular_z
         #publish msg
         self.move_publisher.publish(msg)
-        self.get_logger().info(f"Publishing a msg with msg:\nlinear:\n  x={msg.linear.x}\n  y={msg.linear.y}\n  z={msg.linear.z}\nangular:\n  x={msg.angular.x}\n  y={msg.angular.y}\n  z={msg.angular.z}\n")
+        #self.get_logger().info(f"Publishing a msg with msg:\nlinear:\n  x={msg.linear.x}\n  y={msg.linear.y}\n  z={msg.linear.z}\nangular:\n  x={msg.angular.x}\n  y={msg.angular.y}\n  z={msg.angular.z}\n")
         
     def publish_bot_state(self):
         """
@@ -89,15 +89,18 @@ class MovementPublisher(Node):
         Callback function to process the information sent from the /camera_info topic
         Input format : type String, msg.data="<angle>;<distance>;<detected>"
         <angle> is a float that represents the angle in degrees (positive is right, negative is left)
-        <distance> is a float that represents the distance to the other bot in cm
-        <detected> is ann int 0->False, 1->True
+        <distance> is a float that represents the distance to the other bot in m
+        <detected> is an int 0->False, 1->True
         """
         self.get_logger().info(f"Camera_processor received msg = {msg.data}")
-        #parse msg
-        angle, distance, detected = str(msg.data).split(";") 
-        angle = float(angle)
-        distance = float(distance)
-        detected = float(detected)
+        try:
+            #parse msg
+            angle, distance, detected = str(msg.data).split(";") 
+            angle = float(angle)
+            distance = float(distance)
+            detected = float(detected)
+        except Exception:
+            self.get_logger().warning(f"Camera_processor received illegal msg = {msg.data}")
         
         if(detected == 1):
             #update msgs to /bot_state topic
@@ -121,7 +124,7 @@ class MovementPublisher(Node):
                 self.angular_y = 0.0
                 self.angular_z = 0.5
             else:
-                if(distance > 50):
+                if(distance > 0.5):
                     #get closer to enemy bot, charge forward!
                     self.linear_x = -1.0 #go forward
                     self.linear_y = 0.0

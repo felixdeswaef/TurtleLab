@@ -21,13 +21,9 @@ class Subscriber(Node):
         self.subscription  # prevent unused variable warning
 
     def listener_callback(self, msg):
-        if msg.data == 'Distance':
-            
-            servoTilt_pwm.ChangeDutyCycle(10.5)
-            time.sleep(0.5)
-            servoTilt_pwm.ChangeDutyCycle(2)
-            time.sleep(0.5)
-            servoTilt_pwm.ChangeDutyCycle(10.5)
+        angle = 7.5 + msg.data/10
+        servoTilt_pwm.ChangeDutyCycle(angle)
+        time.sleep(0.5)
             
         else: #als er even niet geschoten moet worden dan mag de servo terug in zijn midden positie komen
             servoLader_pwm.ChangeDutyCycle(7.5)

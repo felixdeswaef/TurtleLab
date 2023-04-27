@@ -44,6 +44,10 @@ class pixelNode(Node):
         # blue led blinker
         timer_period = 0.5  # 2Hz
         self.timer = self.create_timer(timer_period, self.timer_callback)
+        
+        self.pixels.fill((255, 255, 255))
+        self.get_logger().info('LEDS: STARTUP')
+        self.pixels.show()
 
     def listener_callback(self, msg):        
         if msg.data == 'driving':
