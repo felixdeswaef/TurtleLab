@@ -27,8 +27,7 @@ class Subscriber(Node):
         
         #als er even niet geschoten moet worden dan mag de servo terug
         #in zijn midden positie komen
-        else: 
-            servoLader_pwm.ChangeDutyCycle(7.5)
+        #servoLader_pwm.ChangeDutyCycle(7.5)
             
         self.get_logger().info('I heard: "%s"' % msg.data)
 
