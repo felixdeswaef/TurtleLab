@@ -9,7 +9,7 @@ from std_msgs.msg import String
 class Visual_Cortex(Node):
     def __init__(self):
         super().__init__('Visual_cortex')
-        self.publisher_ = self.create_publisher(String, 'enemy_position', 10)
+        self.publisher_ = self.create_publisher(String, '/camera_info', 10)
         self.camera = cv2.VideoCapture(0)
         self.dictionary = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_4X4_50)
         self.cm = np.array([[823.93985557  , 0.      ,   322.76228491],[  0.    ,     825.11141958 ,279.6240493 ],[  0.    ,  0.      ,     1.        ]])
@@ -18,7 +18,9 @@ class Visual_Cortex(Node):
         self.enemy=[0,1,2,3]
         self.detector = cv2.aruco.ArucoDetector(self.dictionary, self.parameters)
         self.dm = np.array([[ 6.29137073e-02 ,-7.33484417e-01  ,6.53444356e-03 , 3.83894903e-03, 1.16325776e+01]])
-        self.timer = self.create_timer(0.3, self.timer_callback)  # process the vid every 1 second
+        self.timer = self.create_timer(0.1, self.timer_callback)  
+
+
     def my_estimatePoseSingleMarkers(self,corners):
         marker_size=self.ms
         marker_points = np.array([[-marker_size / 2, marker_size / 2, 0],
@@ -48,17 +50,18 @@ class Visual_Cortex(Node):
                 if len(tvec)!=0:
                     afstand=sqrt(tvec[0][0]**2+tvec[0][2]**2) 
                     h=tan(tvec[0][0]/tvec[0][2])       
-                    return afstand,h
-        return 0,0
+                    return afstand,h,1
+        return 0,0,0
 
     def timer_callback(self):
         ret, frame = self.camera.read()  # read a frame from the camera
         if not ret:
-            self.get_logger().warning('Failed to read frame from camera')
+            self.get_logger().info('Failed to read frame from camera')
             return
-        var1,var2=self.pose_estimation(frame)
+        var1,var2,var3=self.pose_estimation(frame)
         msg=String()
-        msg.data = str(var1)+";"+str(var2)
+        self.get_logger().info(str(var2))
+        msg.data = str(var1)+';'+str(var2)+';'+str(var3)
         self.publisher_.publish(msg)
         
 
