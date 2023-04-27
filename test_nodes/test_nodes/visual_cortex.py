@@ -12,7 +12,7 @@ class Visual_Cortex(Node):
         self.publisher_ = self.create_publisher(String, 'enemy_position', 10)
         self.camera = cv2.VideoCapture(0)
         self.dictionary = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_4X4_50)
-        self.cm = np.array([[823.93985557  , 0.      ,   322.76228491],[  0.    ,     825.11141958 ,279.6240493 ],[  0.    ,       0.      ,     1.        ]])
+        self.cm = np.array([[823.93985557  , 0.      ,   322.76228491],[  0.    ,     825.11141958 ,279.6240493 ],[  0.    ,  0.      ,     1.        ]])
         self.parameters = cv2.aruco.DetectorParameters()
         self.ms=0.05
         self.enemy=[0,1,2,3]
@@ -40,25 +40,23 @@ class Visual_Cortex(Node):
     def pose_estimation(self,frame):
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         corners, ids, rejected_img_points = self.detector.detectMarkers(gray)
-        enemy=False
-        enemyid=[0,1,2,3]
         if len(corners) > 0:    
             for i, id in enumerate(ids):
-                if id not in enemyid:
+                if id not in self.enemy:
                     continue
                 rvec, tvec, rejimp= self.my_estimatePoseSingleMarkers(corners[i])
                 if len(tvec)!=0:
                     afstand=sqrt(tvec[0][0]**2+tvec[0][2]**2) 
                     h=tan(tvec[0][0]/tvec[0][2])       
-                    return afstand,h,1
-        return 0,0,0
+                    return afstand,h
+        return 0,0
 
     def timer_callback(self):
         ret, frame = self.camera.read()  # read a frame from the camera
         if not ret:
             self.get_logger().warning('Failed to read frame from camera')
             return
-        var1,var2,var3=self.pose_estimation(frame)
+        var1,var2=self.pose_estimation(frame)
         msg=String()
         msg.data = str(var1)+";"+str(var2)
         self.publisher_.publish(msg)
