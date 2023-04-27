@@ -2,6 +2,7 @@ import rclpy
 from rclpy.node import Node
 from geometry_msgs.msg import Twist #msg type of /cmd_vel
 from std_msgs.msg import String #msg type of /camera_info
+from std_msgs.msg import Float64 #msg type of /enemy_distance
 
 class MovementPublisher(Node):
 
@@ -12,6 +13,7 @@ class MovementPublisher(Node):
     angular_x:float
     angular_y:float
     angular_z:float
+    enemy_distance:float
     
     #value for str message for /bot_state topic
     bot_state:str
@@ -48,6 +50,16 @@ class MovementPublisher(Node):
         #send command every timer_period seconds
         self.timer_bot_state = self.create_timer(timer_period_bot_state, self.publish_bot_state)
         
+        ###publishing to /enemy_distance###
+        self.enemy_distance = 1.5
+        self.enemy_distance_publisher = self.create_publisher(
+            Float64,
+            '/enemy_distance',
+            10
+        )
+        timer_period_enemy_distance = 0.1  # seconds
+        self.timer_enemy_distance = self.create_timer(timer_period_enemy_distance, self.publish_enemy_distance)
+        
         ### subcribition to /camera_info ###
         self.camera_subscriber = self.create_subscription(
             String,                 #msg type
@@ -72,7 +84,16 @@ class MovementPublisher(Node):
         #publish msg
         self.move_publisher.publish(msg)
         #self.get_logger().info(f"Publishing a msg with msg:\nlinear:\n  x={msg.linear.x}\n  y={msg.linear.y}\n  z={msg.linear.z}\nangular:\n  x={msg.angular.x}\n  y={msg.angular.y}\n  z={msg.angular.z}\n")
-        
+    
+    def publish_enemy_distance(self):
+        """
+        Callback function to publish to the /enemy_distance topic
+        Ouput format: type Float64, msg.data="<state>"
+        """
+        msg = Float64()
+        msg.data = self.enemy_distance
+        self.enemy_distance_publisher.publish(msg)
+      
     def publish_bot_state(self):
         """
         Callback function to publish to the /bot_state topic
@@ -87,18 +108,20 @@ class MovementPublisher(Node):
     def camera_processor(self, msg:String):
         """
         Callback function to process the information sent from the /camera_info topic
-        Input format : type String, msg.data="<angle>;<distance>;<detected>"
-        <angle> is a float that represents the angle in degrees (positive is right, negative is left)
+        Input format : type String, msg.data="<distance>;<angle>;<detected>"
+        <angle> is a float that represents the angle in radians (positive is right, negative is left)
         <distance> is a float that represents the distance to the other bot in m
         <detected> is an int 0->False, 1->True
         """
-        self.get_logger().info(f"Camera_processor received msg = {msg.data}")
+        #self.get_logger().info(f"Camera_processor received msg = {msg.data}")
         try:
             #parse msg
-            angle, distance, detected = str(msg.data).split(";") 
-            angle = float(angle)
+            distance, angle, detected = str(msg.data).split(";") 
             distance = float(distance)
+            angle = float(angle)
             detected = float(detected)
+            #update info to publish to /enemy_distance
+            self.enemy_distance = distance
         except Exception:
             self.get_logger().warning(f"Camera_processor received illegal msg = {msg.data}")
         
@@ -113,18 +136,18 @@ class MovementPublisher(Node):
             self.angular_y = 0.0
             self.angular_z = 0.0 
             #aiming 
-            if(angle > 1):
+            if(angle > 0.10):
                 #try to aim at the other bot
                 self.angular_x = 0.0
                 self.angular_y = 0.0
                 self.angular_z = -0.5 
-            elif(angle < -1):
+            elif(angle < -0.10):
                 #try to aim at the other bot
                 self.angular_x = 0.0
                 self.angular_y = 0.0
                 self.angular_z = 0.5
             else:
-                if(distance > 0.5):
+                if(distance > 2.0):
                     #get closer to enemy bot, charge forward!
                     self.linear_x = -1.0 #go forward
                     self.linear_y = 0.0
