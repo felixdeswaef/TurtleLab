@@ -24,9 +24,10 @@ class Subscriber(Node):
         angle = 7.5 + float(msg.data)/10
         servoTilt_pwm.ChangeDutyCycle(angle)
         time.sleep(0.5)
-            
-        else: #als er even niet geschoten moet worden dan mag de servo terug
+        
+        #als er even niet geschoten moet worden dan mag de servo terug
         #in zijn midden positie komen
+        else: 
             servoLader_pwm.ChangeDutyCycle(7.5)
             
         self.get_logger().info('I heard: "%s"' % msg.data)
