@@ -18,7 +18,9 @@ class Visual_Cortex(Node):
         self.enemy=[0,1,2,3]
         self.detector = cv2.aruco.ArucoDetector(self.dictionary, self.parameters)
         self.dm = np.array([[ 6.29137073e-02 ,-7.33484417e-01  ,6.53444356e-03 , 3.83894903e-03, 1.16325776e+01]])
-        self.timer = self.create_timer(0.1, self.timer_callback)  # process the vid every 1 second
+        self.timer = self.create_timer(0.1, self.timer_callback)  
+
+
     def my_estimatePoseSingleMarkers(self,corners):
         marker_size=self.ms
         marker_points = np.array([[-marker_size / 2, marker_size / 2, 0],
@@ -59,7 +61,7 @@ class Visual_Cortex(Node):
         var1,var2,var3=self.pose_estimation(frame)
         msg=String()
         self.get_logger().info(var2)
-        msg.data = str(var1)+";"+str(var2)+";"+str(var3)
+        msg.data = cv2.__version__
         self.publisher_.publish(msg)
         
 
