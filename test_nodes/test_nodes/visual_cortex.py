@@ -61,7 +61,7 @@ class Visual_Cortex(Node):
         var1,var2,var3=self.pose_estimation(frame)
         msg=String()
         self.get_logger().info(str(var2))
-        msg.data = str(cv2.__version__)
+        msg.data = str(var1)+';'+str(var2)+';'+str(var3)
         self.publisher_.publish(msg)
         
 
