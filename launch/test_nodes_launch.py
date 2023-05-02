@@ -14,4 +14,9 @@ def generate_launch_description():
             executable='movement_controller',
             name='movement_controller'
         ),
+        Node(
+            package='test_nodes',
+            executable='firemech',
+            name='firemech'
+        ),
     ])
