@@ -47,7 +47,7 @@ class Subscriber(Node):
             time.sleep(0.5)
         else:
             self.i+=1
-            if self.i >5:
+            if self.i >7:
                 GPIO.output(Motoren, GPIO.LOW)
                 self.i=0
         if 0.12>hoek>-0.12 and detected==1:
