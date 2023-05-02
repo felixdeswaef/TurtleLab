@@ -16,7 +16,7 @@ def generate_launch_description():
         ),
         Node(
             package='test_nodes',
-            executable='firemech',
-            name='firemech'
+            executable='ledSub',
+            name='ledSub'
         ),
     ])
