@@ -60,15 +60,15 @@ class pixelNode(Node):
     
     # Use static colors initially
     def listener_callback(self, msg):        
-        if msg.data == 'driving':
+        if msg.data == "driving":
             self.pixels.fill((0, 255, 0))
             #self.get_logger().info('LEDS: DRIVING')
             
-        elif msg.data == 'detected':
+        elif msg.data == "detected":
             self.pixels.fill((255, 127, 0))
             #self.get_logger().info('LEDS: DETECTED')
             
-        elif msg.data == 'shoot':
+        elif msg.data == "shoot":
             self.pixels.fill((255, 0, 255))
             #self.get_logger().info('LEDS: SHOOT')
 
