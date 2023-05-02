@@ -17,6 +17,7 @@ import neopixel
 # toggle blue LED every 500ms
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(25, GPIO.OUT)
+
 # state of LED
 bluestate = 0
 
