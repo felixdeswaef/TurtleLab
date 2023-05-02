@@ -36,7 +36,7 @@ class SubscriberFiremech(Node):
         else: # voor als er iets zou misgaan met de messages
             GPIO.output(Motoren, GPIO.LOW)
             
-        #self.get_logger().info('I heard: "%s"' % msg.data)
+        self.get_logger().info('I heard: "%s"' % msg.data)
 
 def main(args=None):
     rclpy.init(args=args)
