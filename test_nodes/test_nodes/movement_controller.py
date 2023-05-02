@@ -48,7 +48,7 @@ class MovementPublisher(Node):
         )
         #attribute to configure state
         self.bot_state = "driving"
-        timer_period_bot_state = 0.1  # seconds
+        timer_period_bot_state = 0.5  # seconds
         #send command every timer_period seconds
         self.timer_bot_state = self.create_timer(timer_period_bot_state, self.publish_bot_state)
         
@@ -59,7 +59,7 @@ class MovementPublisher(Node):
             '/enemy_distance',
             10
         )
-        timer_period_enemy_distance = 0.1  # seconds
+        timer_period_enemy_distance = 0.5  # seconds
         self.timer_enemy_distance = self.create_timer(timer_period_enemy_distance, self.publish_enemy_distance)
         
         ### subcribition to /camera_info ###
