@@ -1,6 +1,3 @@
-# permission issues: https://github.com/jgarff/rpi_ws281x/issues/326
-# https://askubuntu.com/questions/1273700/enable-spi-and-i2c-on-ubuntu-20-04-raspberry-pi
-
 # Subscriber dependencies
 import rclpy
 from rclpy.node import Node
@@ -49,11 +46,11 @@ class pixelNode(Node):
         self.pixels = neopixel.NeoPixel(pixel_pin, num_pixels, brightness=0.5, auto_write=False, pixel_order=ORDER)
         
         # blue led blinker
-        blue_tim_per = 0.5  # 2Hz
-        self.blue_tim = self.create_timer(timer_period, self.timer_callback)
+        timer_period = 0.5  # 2Hz
+        self.timer = self.create_timer(timer_period, self.timer_callback)
         
         self.pixels.fill((0, 0, 255))
-        self.get_logger().info('LEDS: STARTUP')
+        self.get_logger().info('LEDS: READY')
         self.pixels.show()
     
     # Use static colors initially
