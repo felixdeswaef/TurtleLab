@@ -29,7 +29,7 @@ setup(
             'movement_controller = test_nodes.movement_controller:main',
             'test_visual_cortex = test_nodes.test_visual_cortex:main',
             'ledSub = test_nodes.ledSub:main',
-            'angle = test_nodes.Angle_Firemech:main',
+            'angle = test_nodes.angle_firemech:main',
             'publi2 = test_nodes.publisher_anglemech_test:main'
         ],
     },
