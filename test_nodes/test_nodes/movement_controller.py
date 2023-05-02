@@ -131,9 +131,6 @@ class MovementPublisher(Node):
             #update msgs to /bot_state topic
             self.bot_state = "detected"
             #reset movement
-            self.linear_x = 0.0 
-            self.linear_y = 0.0
-            self.linear_z = 0.0
             self.angular_x = 0.0
             self.angular_y = 0.0
             self.angular_z = 0.0 
@@ -167,13 +164,14 @@ class MovementPublisher(Node):
             self.linear_z = 0.0
             self.angular_x = 0.0
             self.angular_y = 0.0
-            if(self.stop_counter < 2):
-                self.angular_z = 0.25 #rotate left    
+            if(self.stop_counter < 10):
+                self.angular_z = 0.10 #rotate left    
             else:
                 self.angular_z = 0.0 #stop and scan aruco 
             self.stop_counter+=1
-            if(self.stop_counter > 3):
+            if(self.stop_counter > 20):
                 self.stop_counter = 0
+            print(f"stop_counter {self.stop_counter}")
 
 def main(args=None):
     rclpy.init(args=args)
