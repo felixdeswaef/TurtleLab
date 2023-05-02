@@ -46,7 +46,7 @@ class pixelNode(Node):
             String,
             '/bot_state',
             self.listener_callback,
-            10)
+            1)
         self.subscription  # prevent unused variable warning
 
         # Set up a timer that runs the timer_callback() function every 0.05 seconds

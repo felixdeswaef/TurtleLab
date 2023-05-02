@@ -19,36 +19,46 @@ class SubscriberFiremech(Node):
     def __init__(self):
         super().__init__('firemech_subscriber')
         self.teller = 4
-        self.active = false
+        self.active = False
+        self.inFireSeq = False
         self.subscription = self.create_subscription(String, '/bot_state',
-                self.listener_callback, 10)
+                self.listener_callback, 1)
         self.subscription  # prevent unused variable warning
-
+        
+	def fireSeq(self):
+		GPIO.output(Motoren, GPIO.HIGH)
+        self.active = True
+        time.sleep(2) #timer van 2 seconden zodat de motoren op snelheid geraken
+        servoLader_pwm.ChangeDutyCycle(10.5) #servo van de lader eerst naar achter trekken zodat een pijlje in de loop kan vallen
+        time.sleep(0.5)
+        if self.active:
+        	servoLader_pwm.ChangeDutyCycle(2) #servo naar voor duwen zodat het pijltje afgeschoten wordt
+        else:
+        	self.get_logger().info('coldfire prevention stopped fire sequence')
+        time.sleep(0.5)
+        GPIO.output(Motoren, GPIO.LOW)
+        servoLader_pwm.ChangeDutyCycle(10.5) #servo terug naar achter trekken zodat een volgend pijltje geladen wordt
+        time.sleep(1)
+        self.active = False
+        self.teller -= 1;
+        if(self.teller <= 0): # voor als er iets zou misgaan met de messages
+        	GPIO.output(Motoren, GPIO.LOW)
+        	self.active = False
+        	servoLader_pwm.ChangeDutyCycle(10.5)
+        	time.sleep(0.5)
+        self.inFireSeq = False
+        
     def listener_callback(self, msg):
 
         if msg.data == "shoot":
-            GPIO.output(Motoren, GPIO.HIGH)
-            self.active = true
-            time.sleep(2) #timer van 2 seconden zodat de motoren op snelheid geraken
-            servoLader_pwm.ChangeDutyCycle(10.5) #servo van de lader eerst naar achter trekken zodat een pijlje in de loop kan vallen
-            time.sleep(0.5)
-            if self.active:
-            	servoLader_pwm.ChangeDutyCycle(2) #servo naar voor duwen zodat het pijltje afgeschoten wordt
-            time.sleep(0.5)
-            GPIO.output(Motoren, GPIO.LOW)
-            servoLader_pwm.ChangeDutyCycle(10.5) #servo terug naar achter trekken zodat een volgend pijltje geladen wordt
-            time.sleep(1)
-            self.active = false
-            self.teller -= 1;
-            if(self.teller <= 0):# voor als er iets zou misgaan met de messages
-            	GPIO.output(Motoren, GPIO.LOW)
-            	self.active = false
-            	servoLader_pwm.ChangeDutyCycle(10.5)
-            	time.sleep(0.5)
+        	if (not self.inFireSeq):
+        		self.inFireSeq = True
+        		self.fireSeq(self)
+        		  
         else: # motoren uit
         	self.teller = 4 #reset teller, terug max 4 keer schieten
             GPIO.output(Motoren, GPIO.LOW)
-            self.active = false
+            self.active = False
             servoLader_pwm.ChangeDutyCycle(10.5)
             time.sleep(0.5)
             

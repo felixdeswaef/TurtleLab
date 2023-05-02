@@ -20,16 +20,15 @@ class Subscriber(Node):
         super().__init__('minimal_subscriber')
         self.subscription = self.create_subscription(String, '/camera_info',
                 self.listener_callback, 10)
+        self.i=0
         self.subscription  # prevent unused variable warning
     
     def shoot(self):
-        GPIO.output(Motoren, GPIO.HIGH)
-        time.sleep(2) #timer van 2 seconden zodat de motoren op snelheid geraken
+
         servoLader_pwm.ChangeDutyCycle(10.5) #servo van de lader eerst naar achter trekken zodat een pijlje in de loop kan vallen
         time.sleep(0.5)
         servoLader_pwm.ChangeDutyCycle(2) #servo naar voor duwen zodat het pijltje afgeschoten wordt
         time.sleep(0.5)
-        GPIO.output(Motoren, GPIO.LOW)
         servoLader_pwm.ChangeDutyCycle(10.5) #servo terug naar achter trekken zodat een volgend pijltje geladen wordt
             
 
@@ -42,9 +41,17 @@ class Subscriber(Node):
             detected = float(detected)
         except:
             pass
-        if detected==1 and 0.12>hoek>-0.12:
-            self.shoot()
-
+        if detected:
+            GPIO.output(Motoren, GPIO.HIGH)
+            time.sleep(0.5)
+        else:
+            self.i+=1
+            if self.i >20:
+                GPIO.output(Motoren, GPIO.LOW)
+                self.i=0
+        if 0.12>hoek>-0.12:
+            self.charge()
+    
         self.get_logger().info('I heard: "%s"' % msg.data)
 
 def main(args=None):
