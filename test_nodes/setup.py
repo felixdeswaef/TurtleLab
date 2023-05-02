@@ -21,7 +21,7 @@ setup(
     entry_points={
         'console_scripts': [              
         	'talker = test_nodes.publisher_firemech_test:main',
-            'listener = test_nodes.subscriber_firemech:main',
+            'listener = test_nodes.firemech:main',
             'vel_publisher = test_nodes.vel_publisher:main',
             'keyboard_reader = test_nodes.keyboard_reader:main',
             'visual_cortex = test_nodes.visual_cortex:main',

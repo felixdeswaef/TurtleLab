@@ -165,7 +165,7 @@ class MovementPublisher(Node):
             self.linear_z = 0.0
             self.angular_x = 0.0
             self.angular_y = 0.0
-            self.angular_z = 0.5 #rotate left     
+            self.angular_z = 0.25 #rotate left     
 
 def main(args=None):
     rclpy.init(args=args)
