@@ -1,3 +1,6 @@
+# permission issues: https://github.com/jgarff/rpi_ws281x/issues/326
+# https://askubuntu.com/questions/1273700/enable-spi-and-i2c-on-ubuntu-20-04-raspberry-pi
+
 # Subscriber dependencies
 import rclpy
 from rclpy.node import Node
@@ -13,22 +16,22 @@ import neopixel
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(25, GPIO.OUT)
 
-#from adafruit_led_animation.color import *
-#from adafruit_led_animation.animation.rainbow import Rainbow
-#from adafruit_led_animation.animation.chase import Chase
-#from adafruit_led_animation.animation.comet import Comet
-#from adafruit_led_animation.animation.solid import Solid
-#from adafruit_led_animation.color import *
+from adafruit_led_animation.color import *
+from adafruit_led_animation.animation.rainbow import Rainbow
+from adafruit_led_animation.animation.chase import Chase
+from adafruit_led_animation.animation.comet import Comet
+from adafruit_led_animation.animation.solid import Solid
+from adafruit_led_animation.color import *
 
 bluestate = 0
-#rainbow = Rainbow(pixels, speed=0.1, period=3, step=5)
-#comet = Comet(pixels, speed=0.1, color=PURPLE, tail_length=17, bounce=True)
-#chase = Chase(pixels, speed=0.1, size=4, spacing=6, color=AMBER)
-#solid = Solid(pixels, color=RED)
+rainbow = Rainbow(pixels, speed=0.1, period=3, step=5)
+comet = Comet(pixels, speed=0.1, color=PURPLE, tail_length=17, bounce=True)
+chase = Chase(pixels, speed=0.1, size=4, spacing=6, color=AMBER)
+solid = Solid(pixels, color=RED)
 
 class pixelNode(Node):
 
-    def __init__(self, pixel_pin = board.D18, num_pixels = 34, ORDER = neopixel.GRB):       
+    def __init__(self, pixel_pin = board.D10, num_pixels = 34, ORDER = neopixel.GRB):
         super().__init__('pixel_node')
 
         self.subscription = self.create_subscription(
@@ -84,10 +87,7 @@ def main(args=None):
     pixel_node = pixelNode()
 
     rclpy.spin(pixel_node)
-
-    # Destroy the node explicitly
-    # (optional - otherwise it will be done automatically
-    # when the garbage collector destroys the node object)
+    
     pixel_node.destroy_node()
     rclpy.shutdown()
    
