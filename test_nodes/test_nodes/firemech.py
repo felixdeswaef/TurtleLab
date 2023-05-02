@@ -13,12 +13,13 @@ GPIO.setup(Motoren, GPIO.OUT) #pin als output zetten
 GPIO.setup(Lader, GPIO.OUT)
 servoLader_pwm = GPIO.PWM(Lader, 50) #servo frequency van 50Hz
 servoLader_pwm.start(7.5) #dit eventueel al op 10.5 zetten zodat dit niet meer in de lus hoeft gedaan te worden
-teller = 4
 
 class SubscriberFiremech(Node):
-
+	
     def __init__(self):
         super().__init__('firemech_subscriber')
+        self.teller = 4
+        self.active = false
         self.subscription = self.create_subscription(String, '/bot_state',
                 self.listener_callback, 10)
         self.subscription  # prevent unused variable warning
@@ -27,21 +28,27 @@ class SubscriberFiremech(Node):
 
         if msg.data == "shoot":
             GPIO.output(Motoren, GPIO.HIGH)
+            self.active = true
             time.sleep(2) #timer van 2 seconden zodat de motoren op snelheid geraken
             servoLader_pwm.ChangeDutyCycle(10.5) #servo van de lader eerst naar achter trekken zodat een pijlje in de loop kan vallen
             time.sleep(0.5)
-            servoLader_pwm.ChangeDutyCycle(2) #servo naar voor duwen zodat het pijltje afgeschoten wordt
+            if self.active:
+            	servoLader_pwm.ChangeDutyCycle(2) #servo naar voor duwen zodat het pijltje afgeschoten wordt
             time.sleep(0.5)
             GPIO.output(Motoren, GPIO.LOW)
             servoLader_pwm.ChangeDutyCycle(10.5) #servo terug naar achter trekken zodat een volgend pijltje geladen wordt
-            teller -= 1;
-            if(teller == 0):# voor als er iets zou misgaan met de messages
+            time.sleep(1)
+            self.active = false
+            self.teller -= 1;
+            if(self.teller <= 0):# voor als er iets zou misgaan met de messages
             	GPIO.output(Motoren, GPIO.LOW)
+            	self.active = false
             	servoLader_pwm.ChangeDutyCycle(10.5)
             	time.sleep(0.5)
         else: # motoren uit
-        	teller = 4 #reset teller, terug max 4 keer schieten
+        	self.teller = 4 #reset teller, terug max 4 keer schieten
             GPIO.output(Motoren, GPIO.LOW)
+            self.active = false
             servoLader_pwm.ChangeDutyCycle(10.5)
             time.sleep(0.5)
             
