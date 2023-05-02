@@ -158,6 +158,7 @@ class MovementPublisher(Node):
                     self.linear_z = 0.0
                     self.bot_state = "shoot" #fire!
         else:
+            self.bot_state = "driving"
             #search enemy bot, start rotating by changing msgs to /cmd_vel topic
             self.linear_x = 0.0 
             self.linear_y = 0.0
