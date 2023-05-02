@@ -53,7 +53,7 @@ class pixelNode(Node):
         self.get_logger().info('LEDS: READY')
         self.pixels.show()
     
-    # Use static colors initially
+    # Use static colors
     def listener_callback(self, msg):        
         if msg.data == "driving":
             self.pixels.fill((0, 255, 0))
