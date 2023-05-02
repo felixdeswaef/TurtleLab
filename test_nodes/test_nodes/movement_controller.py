@@ -142,16 +142,16 @@ class MovementPublisher(Node):
                 #try to aim at the other bot
                 self.angular_x = 0.0
                 self.angular_y = 0.0
-                self.angular_z = -0.5 
+                self.angular_z = -0.2 
             elif(angle < -0.15):
                 #try to aim at the other bot
                 self.angular_x = 0.0
                 self.angular_y = 0.0
-                self.angular_z = 0.5
+                self.angular_z = 0.2
             else:
                 if(distance > 1.0):
                     #get closer to enemy bot, charge forward!
-                    self.linear_x = -1.0 #go forward
+                    self.linear_x = -0.9 #go forward
                     self.linear_y = 0.0
                     self.linear_z = 0.0
                 else:
