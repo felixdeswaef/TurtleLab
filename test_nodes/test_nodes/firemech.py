@@ -22,10 +22,11 @@ class SubscriberFiremech(Node):
         self.active = False
         self.inFireSeq = False
         self.subscription = self.create_subscription(String, '/bot_state',
-                self.listener_callback, 10)
+                self.listener_callback, 1)
         self.subscription  # prevent unused variable warning
       
     def fireSeq(self):
+        self.get_logger().info('zit in de fireSeq')
         GPIO.output(Motoren, GPIO.HIGH)
         self.active = True
         time.sleep(2) #timer van 2 seconden zodat de motoren op snelheid geraken
