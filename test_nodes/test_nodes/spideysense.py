@@ -21,6 +21,7 @@ class Subscriber(Node):
         self.subscription = self.create_subscription(String, '/camera_info',
                 self.listener_callback, 10)
         self.i=0
+        GPIO.output(Motoren, GPIO.LOW)
         self.subscription  # prevent unused variable warning
     
     def shoot(self):
@@ -41,12 +42,12 @@ class Subscriber(Node):
             detected = float(detected)
         except:
             pass
-        if detected:
+        if detected==1:
             GPIO.output(Motoren, GPIO.HIGH)
             time.sleep(0.5)
         else:
             self.i+=1
-            if self.i >20:
+            if self.i >5:
                 GPIO.output(Motoren, GPIO.LOW)
                 self.i=0
         if 0.12>hoek>-0.12:
