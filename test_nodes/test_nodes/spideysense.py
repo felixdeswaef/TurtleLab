@@ -34,10 +34,15 @@ class Subscriber(Node):
             
 
     def listener_callback(self, msg):
-        data=str(msg.data)
-        data.split(";")
-        hoek=float(data[1])
-        if data[2]=="1" and 0.12>hoek>-0.12:
+        try:
+            #parse msg
+            distance, angle, detected = str(msg.data).split(";") 
+            distance = float(distance)
+            hoek = float(angle)
+            detected = float(detected)
+        except:
+            pass
+        if detected==1 and 0.12>hoek>-0.12:
             self.shoot()
 
         self.get_logger().info('I heard: "%s"' % msg.data)

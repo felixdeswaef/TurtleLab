@@ -54,6 +54,7 @@ class Visual_Cortex(Node):
         return 1.5,0,0
 
     def timer_callback(self):
+        self.camera.set(cv2.CAP_PROP_POS_FRAMES,0)
         ret, frame = self.camera.read()  # read a frame from the camera
         if not ret:
             self.get_logger().info('Failed to read frame from camera')
