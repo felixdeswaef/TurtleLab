@@ -17,7 +17,7 @@ servoLader_pwm.start(7.5) #dit eventueel al op 10.5 zetten zodat dit niet meer i
 class SubscriberFiremech(Node):
 
     def __init__(self):
-        super().__init__('firemechsubscriber')
+        super().__init__('firemech_subscriber')
         self.subscription = self.create_subscription(String, '/bot_state',
                 self.listener_callback, 10)
         self.subscription  # prevent unused variable warning
@@ -41,11 +41,11 @@ class SubscriberFiremech(Node):
 def main(args=None):
     rclpy.init(args=args)
 
-    firemechsubscriber = SubscriberFiremech()
+    firemech_subscriber = SubscriberFiremech()
 
-    rclpy.spin(firemechsubscriber)
+    rclpy.spin(firemech_subscriber)
 
-    firemechsubscriber.destroy_node()
+    firemech_subscriber.destroy_node()
     rclpy.shutdown()
 
 if __name__ == '__main__':
