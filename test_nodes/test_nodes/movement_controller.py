@@ -44,7 +44,7 @@ class MovementPublisher(Node):
         self.state_publisher = self.create_publisher(
             String,             #msg type
             '/bot_state',       #topic name 
-             10                 #qos
+             1                 #qos
         )
         #attribute to configure state
         self.bot_state = "driving"
