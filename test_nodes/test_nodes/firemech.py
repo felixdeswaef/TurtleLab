@@ -26,7 +26,7 @@ class SubscriberFiremech(Node):
         self.subscription  # prevent unused variable warning
       
     def fireSeq(self):
-		GPIO.output(Motoren, GPIO.HIGH)
+        GPIO.output(Motoren, GPIO.HIGH)
         self.active = True
         time.sleep(2) #timer van 2 seconden zodat de motoren op snelheid geraken
         servoLader_pwm.ChangeDutyCycle(10.5) #servo van de lader eerst naar achter trekken zodat een pijlje in de loop kan vallen
