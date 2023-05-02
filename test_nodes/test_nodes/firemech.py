@@ -14,16 +14,16 @@ GPIO.setup(Lader, GPIO.OUT)
 servoLader_pwm = GPIO.PWM(Lader, 50) #servo frequency van 50Hz
 servoLader_pwm.start(7.5) #dit eventueel al op 10.5 zetten zodat dit niet meer in de lus hoeft gedaan te worden
 
-class Subscriber(Node):
+class SubscriberFiremech(Node):
 
     def __init__(self):
-        super().__init__('minimal_subscriber')
+        super().__init__('firemech_subscriber')
         self.subscription = self.create_subscription(String, '/bot_state',
                 self.listener_callback, 10)
         self.subscription  # prevent unused variable warning
 
     def listener_callback(self, msg):
-        if msg.data == 'shoot':
+        if msg.data == "shoot":
             GPIO.output(Motoren, GPIO.HIGH)
             time.sleep(2) #timer van 2 seconden zodat de motoren op snelheid geraken
             servoLader_pwm.ChangeDutyCycle(10.5) #servo van de lader eerst naar achter trekken zodat een pijlje in de loop kan vallen
@@ -36,16 +36,16 @@ class Subscriber(Node):
         else: # voor als er iets zou misgaan met de messages
             GPIO.output(Motoren, GPIO.LOW)
             
-        self.get_logger().info('I heard: "%s"' % msg.data)
+        #self.get_logger().info('I heard: "%s"' % msg.data)
 
 def main(args=None):
     rclpy.init(args=args)
 
-    FireMech_subscriber = Subscriber()
+    firemech_subscriber = SubscriberFiremech()
 
-    rclpy.spin(FireMech_subscriber)
+    rclpy.spin(firemech_subscriber)
 
-    FireMech_subscriber.destroy_node()
+    firemech_subscriber.destroy_node()
     rclpy.shutdown()
 
 if __name__ == '__main__':

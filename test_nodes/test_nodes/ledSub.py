@@ -47,14 +47,12 @@ class pixelNode(Node):
             10)
         self.subscription  # prevent unused variable warning
         self.pixels = neopixel.NeoPixel(pixel_pin, num_pixels, brightness=0.5, auto_write=False, pixel_order=ORDER)
-        self.pixels.fill((255, 0, 0))
-        self.pixels.show()
         
         # blue led blinker
         blue_tim_per = 0.5  # 2Hz
         self.blue_tim = self.create_timer(timer_period, self.timer_callback)
         
-        self.pixels.fill((255, 255, 255))
+        self.pixels.fill((0, 0, 255))
         self.get_logger().info('LEDS: STARTUP')
         self.pixels.show()
     
