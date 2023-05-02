@@ -31,6 +31,7 @@ setup(
             'ledsub = test_nodes.ledsub:main',
             'angle = test_nodes.angle_firemech:main',
             'publi2 = test_nodes.publisher_anglemech_test:main'
+            'spideysense= test_nodes.spideysense:main'
         ],
     },
 )
