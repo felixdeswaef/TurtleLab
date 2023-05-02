@@ -14,10 +14,10 @@ GPIO.setup(Lader, GPIO.OUT)
 servoLader_pwm = GPIO.PWM(Lader, 50) #servo frequency van 50Hz
 servoLader_pwm.start(7.5) #dit eventueel al op 10.5 zetten zodat dit niet meer in de lus hoeft gedaan te worden
 
-class Subscriber(Node):
+class SubscriberFiremech(Node):
 
     def __init__(self):
-        super().__init__('minimal_subscriber')
+        super().__init__('firemechsubscriber')
         self.subscription = self.create_subscription(String, '/bot_state',
                 self.listener_callback, 10)
         self.subscription  # prevent unused variable warning
@@ -41,11 +41,11 @@ class Subscriber(Node):
 def main(args=None):
     rclpy.init(args=args)
 
-    FireMech_subscriber = Subscriber()
+    firemechsubscriber = SubscriberFiremech()
 
-    rclpy.spin(FireMech_subscriber)
+    rclpy.spin(firemechsubscriber)
 
-    FireMech_subscriber.destroy_node()
+    firemechsubscriber.destroy_node()
     rclpy.shutdown()
 
 if __name__ == '__main__':
