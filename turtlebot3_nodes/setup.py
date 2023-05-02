@@ -20,6 +20,14 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
+            #main nodes
+            'visual_cortex = turtlebot3_nodes.visual_cortex:main',   
+            'movement_controller = turtlebot3_nodes.movement_controller:main',
+            'ledSub = turtlebot3_nodes.ledSub:main',   
+            'firemech = turtlebot3_nodes.firemech:main',   
+            #variations of firemech
+            'firemech_2 = turtlebot3_nodes.firemech_2:main', 
+            'spideysense = turtlebot3_nodes.spideysense:main'
         ],
     },
 )

@@ -6,16 +6,18 @@ from std_msgs.msg import Float64 #msg type of /enemy_distance
 
 class MovementPublisher(Node):
 
-    #values for the twist message for /cmd_vel topic
+    #values for the twist message -> topic /cmd_vel 
     linear_x:float
     linear_y:float
     linear_z:float
     angular_x:float
     angular_y:float
     angular_z:float
+    
+    #value for the Float64 message -> topic /enemy_distance 
     enemy_distance:float
     
-    #value for str message for /bot_state topic
+    #value for str message -> topic /bot_state 
     bot_state:str
     
     def __init__(self):
@@ -25,7 +27,7 @@ class MovementPublisher(Node):
         self.move_publisher = self.create_publisher(
             Twist,      #msg type
             '/cmd_vel', #topic name 
-             10         #qos
+             10         #queue size
         )
         #attributes to control speed
         self.linear_x = 0.0 #forward-backward control
@@ -42,12 +44,12 @@ class MovementPublisher(Node):
         
         ### publishing to /bot_state ###
         self.state_publisher = self.create_publisher(
-            String,             #msg type
-            '/bot_state',       #topic name 
-             1                 #qos
+            String,         #msg type
+            '/bot_state',   #topic name 
+             1              #queue size
         )
         #attribute to configure state
-        self.bot_state = "driving"
+        self.bot_state = "driving" #initial state
         timer_period_bot_state = 0.5  # seconds
         #send command every timer_period seconds
         self.timer_bot_state = self.create_timer(timer_period_bot_state, self.publish_bot_state)
@@ -67,13 +69,13 @@ class MovementPublisher(Node):
             String,                 #msg type
             '/camera_info',         #topic name
             self.camera_processor,  #subscriber callback function
-            10                      #qos
+            10                      #queue size
         )
 
     def publish_velocity(self):
         """
         Callback function to publish to the /cmd_vel topic
-        Output format: type Twist, msg.linear and msg.angular contains floats to change velocity of turtlebot 
+        Output format: type Twist, msg.linear and msg.angular contain floats to change velocity of the turtlebot 
         """
         #create msg
         msg = Twist()
@@ -85,12 +87,12 @@ class MovementPublisher(Node):
         msg.angular.z = self.angular_z
         #publish msg
         self.move_publisher.publish(msg)
-        self.get_logger().info(f"Publishing a msg with msg:\nlinear:\n  x={msg.linear.x}\n  y={msg.linear.y}\n  z={msg.linear.z}\nangular:\n  x={msg.angular.x}\n  y={msg.angular.y}\n  z={msg.angular.z}\n", throttle_duration_sec=1.0)
+        self.get_logger().info(f"Publishing a msg with msg:\nlinear:\n  x={msg.linear.x}\n  y={msg.linear.y}\n  z={msg.linear.z}\nangular:\n  x={msg.angular.x}\n  y={msg.angular.y}\n  z={msg.angular.z}\n")
     
     def publish_enemy_distance(self):
         """
         Callback function to publish to the /enemy_distance topic
-        Ouput format: type Float64, msg.data="<state>"
+        Ouput format: type Float64, msg.data="<distance>". Distance is expressed in meters.
         """
         msg = Float64()
         msg.data = self.enemy_distance
@@ -111,11 +113,11 @@ class MovementPublisher(Node):
         """
         Callback function to process the information sent from the /camera_info topic
         Input format : type String, msg.data="<distance>;<angle>;<detected>"
+        <distance> is a float that represents the distance to the other bot, expressed in meters (m)
         <angle> is a float that represents the angle in radians (positive is right, negative is left)
-        <distance> is a float that represents the distance to the other bot in m
-        <detected> is an int 0->False, 1->True
+        <detected> is an int 0->False, enemy bot not detected, 1->True, enemy bot detected
         """
-        self.get_logger().info(f"Camera_processor received msg = {msg.data}", throttle_duration_sec=1.0)
+        self.get_logger().info(f"Camera_processor received msg = {msg.data}")
         try:
             #parse msg
             distance, angle, detected = str(msg.data).split(";") 
@@ -131,40 +133,28 @@ class MovementPublisher(Node):
             #update msgs to /bot_state topic
             self.bot_state = "detected"
             #reset movement
-            self.angular_x = 0.0
-            self.angular_y = 0.0
+            self.linear_x= 0.0
             self.angular_z = 0.0 
             #aiming 
             if(angle > 0.10):
                 #try to aim at the other bot
-                self.angular_x = 0.0
-                self.angular_y = 0.0
-                self.angular_z = -0.1 
+                self.angular_z = -0.1 #turn left 
             elif(angle < -0.10):
                 #try to aim at the other bot
-                self.angular_x = 0.0
-                self.angular_y = 0.0
-                self.angular_z = 0.1
+                self.angular_z = 0.1 #turn right
             else:
                 if(distance > 1.0):
                     #get closer to enemy bot, charge forward!
                     self.linear_x = -0.5 #go forward
-                    self.linear_y = 0.0
-                    self.linear_z = 0.0
                 else:
                     #close enough, stand still
                     self.linear_x = 0.0 
-                    self.linear_y = 0.0
-                    self.linear_z = 0.0
                     self.bot_state = "shoot" #fire!
         else:
             self.bot_state = "driving"
-            #search enemy bot, start rotating by changing msgs to /cmd_vel topic
+            #search enemy bot:
             self.linear_x = 0.0 
-            self.linear_y = 0.0
-            self.linear_z = 0.0
-            self.angular_x = 0.0
-            self.angular_y = 0.0
+            #turn and stop to find aruco marker:
             if(self.stop_counter < 10):
                 self.angular_z = 0.10 #rotate left    
             else:

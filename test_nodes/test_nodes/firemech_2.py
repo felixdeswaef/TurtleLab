@@ -18,9 +18,12 @@ class SubscriberFiremech(Node):
 
     def __init__(self):
         super().__init__('firemech_subscriber')
-        self.subscription = self.create_subscription(String, '/bot_state',
-                                                     self.listener_callback, 1)
-        self.subscription  # prevent unused variable warning
+        self.subscription = self.create_subscription(
+            String,                 #msg type
+            '/bot_state',           #topic name
+            self.listener_callback, #callback function when receiving a message
+            1                       #qos (buffer length of msgs)
+        )
 
     def listener_callback(self, msg):
         if msg.data == "shoot":
@@ -39,7 +42,7 @@ class SubscriberFiremech(Node):
             servoLader_pwm.ChangeDutyCycle(10.5)
             time.sleep(0.5)
 
-        self.get_logger().info('I heard: "%s"' % msg.data)
+        self.get_logger().info(f"I heard: {msg.data}")
 
 
 def main(args=None):

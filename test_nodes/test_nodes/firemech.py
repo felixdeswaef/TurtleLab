@@ -18,10 +18,13 @@ class SubscriberFiremech(Node):
 
     def __init__(self):
         super().__init__('firemech_subscriber')
-        self.teller = 4
-        self.subscription = self.create_subscription(String, '/bot_state',
-                                                     self.listener_callback, 1)
-        self.subscription  # prevent unused variable warning
+        self.teller = 4 #max 4 consecutive shots
+        self.subscription = self.create_subscription(
+            String,                 #msg type
+            '/bot_state',           #topic name
+            self.listener_callback, #callback function when receiving a message
+            1                       #qos (buffer length of msgs)
+        )
 
     def listener_callback(self, msg):
         if msg.data == "shoot":
@@ -35,7 +38,7 @@ class SubscriberFiremech(Node):
             servoLader_pwm.ChangeDutyCycle(10.5)  # servo terug naar achter trekken zodat een volgend pijltje geladen wordt
             time.sleep(1)
 
-            self.teller -= 1;
+            self.teller -= 1
             if (self.teller <= 0):  # Voor beveiliging dat de motoren niet te lang aan zijn
                 GPIO.output(Motoren, GPIO.LOW)
                 servoLader_pwm.ChangeDutyCycle(10.5)
@@ -46,7 +49,7 @@ class SubscriberFiremech(Node):
             servoLader_pwm.ChangeDutyCycle(10.5)
             time.sleep(0.5)
 
-self.get_logger().info('I heard: "%s"' % msg.data)
+        self.get_logger().info(f"I heard: {msg.data}")
 
 def main(args=None):
     rclpy.init(args=args)
