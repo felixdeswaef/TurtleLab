@@ -23,7 +23,7 @@ class SubscriberFiremech(Node):
         self.subscription  # prevent unused variable warning
 
     def listener_callback(self, msg):
-        if msg.data == 'shoot':
+        if msg.data == "shoot":
             GPIO.output(Motoren, GPIO.HIGH)
             time.sleep(2) #timer van 2 seconden zodat de motoren op snelheid geraken
             servoLader_pwm.ChangeDutyCycle(10.5) #servo van de lader eerst naar achter trekken zodat een pijlje in de loop kan vallen
@@ -36,7 +36,7 @@ class SubscriberFiremech(Node):
         else: # voor als er iets zou misgaan met de messages
             GPIO.output(Motoren, GPIO.LOW)
             
-        self.get_logger().info('I heard: "%s"' % msg.data)
+        #self.get_logger().info('I heard: "%s"' % msg.data)
 
 def main(args=None):
     rclpy.init(args=args)
