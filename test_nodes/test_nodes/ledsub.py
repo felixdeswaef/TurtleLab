@@ -28,6 +28,12 @@ pixels = neopixel.NeoPixel(
     pixel_pin, num_pixels, brightness=0.5, auto_write=False, pixel_order=ORDER
 )
 
+# define animations
+rainbow = Rainbow(pixels, speed=0.1, period=3, step=5)
+comet = Comet(pixels, speed=0.1, color=(255, 0, 255), tail_length=17, bounce=True)
+chase = Chase(pixels, speed=0.1, size=4, spacing=6, color=(255, 127, 0))
+solid = Solid(pixels, color=(255, 0, 0))
+
 # Define a class for the pixel node
 class pixelNode(Node):
 
@@ -68,9 +74,6 @@ class pixelNode(Node):
 
         else:
             botstate = 3
-        
-        # Display the NeoPixels based on botstate
-        self.pixels.show()
 
     # Timer callback function
     def timer_callback(self):
