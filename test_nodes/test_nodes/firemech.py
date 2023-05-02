@@ -13,6 +13,7 @@ GPIO.setup(Motoren, GPIO.OUT) #pin als output zetten
 GPIO.setup(Lader, GPIO.OUT)
 servoLader_pwm = GPIO.PWM(Lader, 50) #servo frequency van 50Hz
 servoLader_pwm.start(7.5) #dit eventueel al op 10.5 zetten zodat dit niet meer in de lus hoeft gedaan te worden
+teller = 4
 
 class SubscriberFiremech(Node):
 
@@ -23,6 +24,7 @@ class SubscriberFiremech(Node):
         self.subscription  # prevent unused variable warning
 
     def listener_callback(self, msg):
+
         if msg.data == "shoot":
             GPIO.output(Motoren, GPIO.HIGH)
             time.sleep(2) #timer van 2 seconden zodat de motoren op snelheid geraken
@@ -32,8 +34,13 @@ class SubscriberFiremech(Node):
             time.sleep(0.5)
             GPIO.output(Motoren, GPIO.LOW)
             servoLader_pwm.ChangeDutyCycle(10.5) #servo terug naar achter trekken zodat een volgend pijltje geladen wordt
-            
-        else: # voor als er iets zou misgaan met de messages
+            teller -= 1;
+            if(teller == 0):# voor als er iets zou misgaan met de messages
+            	GPIO.output(Motoren, GPIO.LOW)
+            	servoLader_pwm.ChangeDutyCycle(10.5)
+            	time.sleep(0.5)
+        else: # motoren uit
+        	teller = 4 #reset teller, terug max 4 keer schieten
             GPIO.output(Motoren, GPIO.LOW)
             servoLader_pwm.ChangeDutyCycle(10.5)
             time.sleep(0.5)
