@@ -85,7 +85,7 @@ class MovementPublisher(Node):
         msg.angular.z = self.angular_z
         #publish msg
         self.move_publisher.publish(msg)
-        self.get_logger().info(f"Publishing a msg with msg:\nlinear:\n  x={msg.linear.x}\n  y={msg.linear.y}\n  z={msg.linear.z}\nangular:\n  x={msg.angular.x}\n  y={msg.angular.y}\n  z={msg.angular.z}\n")
+        self.get_logger().info(f"Publishing a msg with msg:\nlinear:\n  x={msg.linear.x}\n  y={msg.linear.y}\n  z={msg.linear.z}\nangular:\n  x={msg.angular.x}\n  y={msg.angular.y}\n  z={msg.angular.z}\n", throttle_duration_sec=1.0)
     
     def publish_enemy_distance(self):
         """
@@ -115,7 +115,7 @@ class MovementPublisher(Node):
         <distance> is a float that represents the distance to the other bot in m
         <detected> is an int 0->False, 1->True
         """
-        #self.get_logger().info(f"Camera_processor received msg = {msg.data}")
+        self.get_logger().info(f"Camera_processor received msg = {msg.data}", throttle_duration_sec=1.0)
         try:
             #parse msg
             distance, angle, detected = str(msg.data).split(";") 
