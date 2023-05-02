@@ -22,7 +22,7 @@ class SubscriberFiremech(Node):
         self.active = False
         self.inFireSeq = False
         self.subscription = self.create_subscription(String, '/bot_state',
-                self.listener_callback, 1)
+                self.listener_callback, 10)
         self.subscription  # prevent unused variable warning
       
     def fireSeq(self):
