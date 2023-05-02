@@ -15,8 +15,8 @@ import neopixel
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(25, GPIO.OUT)
 
-# state of LED
-bluestate = 0
+# state of bot
+botstate = 0
 
 # animation and color library
 from adafruit_led_animation.color import *
@@ -46,7 +46,7 @@ class pixelNode(Node):
         self.pixels = neopixel.NeoPixel(pixel_pin, num_pixels, brightness=0.5, auto_write=False, pixel_order=ORDER)
         
         # blue led blinker
-        timer_period = 0.1  # 10Hz
+        timer_period = 0.05  # 20Hz
         self.timer = self.create_timer(timer_period, self.timer_callback)
         
         self.pixels.fill((0, 0, 255))
@@ -55,37 +55,48 @@ class pixelNode(Node):
     
     # Use static colors
     def listener_callback(self, msg):
-        global bluestate
+        global botstate
         
         if msg.data == "driving":
-            bluestate = 0
+            botstate = 0
             #self.pixels.fill((0, 255, 0))
             #self.get_logger().info('LEDS: DRIVING')
             
         elif msg.data == "detected":
-            bluestate = 0
+            botstate = 1
             #self.pixels.fill((255, 127, 0))
             #self.get_logger().info('LEDS: DETECTED')
             
         elif msg.data == "shoot":
-            bluestate = 1
+            botstate = 2
             #self.pixels.fill((255, 0, 255))
             #self.get_logger().info('LEDS: SHOOT')
 
         else:
-            bluestate = 0
+            botstate = 3
             #self.pixels.fill((255, 0, 0))
             #self.get_logger().info('LEDS: UNKNOWN')
         
         self.pixels.show()
         
     def timer_callback(self):
-        global bluestate
-        rainbow.animate()
-        if bluestate == 0:
+        global botstate
+        
+        if botstate == 0:
             GPIO.output(25, GPIO.HIGH)
+            rainbow.animate()
+            
+        elif botstate == 1:
+            GPIO.output(25, GPIO.LOW)
+            chase.animate()
+            
+        elif botstate == 2:
+            GPIO.output(25, GPIO.LOW)
+            comet.animate()
+            
         else:
-            GPIO.output(25, GPIO.LOW)    
+            GPIO.output(25, GPIO.LOW)
+            solid.animate()
             
 def main(args=None):
     rclpy.init(args=args)
