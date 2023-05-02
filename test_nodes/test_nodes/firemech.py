@@ -35,6 +35,8 @@ class SubscriberFiremech(Node):
             
         else: # voor als er iets zou misgaan met de messages
             GPIO.output(Motoren, GPIO.LOW)
+            servoLader_pwm.ChangeDutyCycle(10.5)
+            time.sleep(0.5)
             
         self.get_logger().info('I heard: "%s"' % msg.data)
 
