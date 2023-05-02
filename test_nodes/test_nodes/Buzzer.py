@@ -22,7 +22,7 @@ class MinimalSubscriber(Node):
     	    i = 200
     	    while (i >= 0):
                 BuzzerStarWars(pin0)
-                 i -= 1
+                i -= 1
            
         else: #voor als er iets zou misgaan met de messages
            GPIO.output(Motoren, 0)
