@@ -18,7 +18,7 @@ class Visual_Cortex(Node):
         self.enemy=[0,1,2,3]
         self.detector = cv2.aruco.ArucoDetector(self.dictionary, self.parameters)
         self.dm = np.array([[ 6.29137073e-02 ,-7.33484417e-01  ,6.53444356e-03 , 3.83894903e-03, 1.16325776e+01]])
-        self.timer = self.create_timer(0.1, self.timer_callback)  
+        self.timer = self.create_timer(0.3, self.timer_callback)  
 
 
     def my_estimatePoseSingleMarkers(self,corners):

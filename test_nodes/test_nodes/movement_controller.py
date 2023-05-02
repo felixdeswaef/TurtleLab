@@ -34,7 +34,9 @@ class MovementPublisher(Node):
         self.angular_x = 0.0
         self.angular_y = 0.0
         self.angular_z = 0.0 #left-right control
-        timer_period_cmd_vel = 0.1  # seconds
+        #for rotation in short intervals:
+        self.stop_counter = 0
+        timer_period_cmd_vel = 0.5  # seconds
         #send command every timer_period seconds
         self.timer_cmd_vel = self.create_timer(timer_period_cmd_vel, self.publish_velocity)
         
@@ -136,18 +138,18 @@ class MovementPublisher(Node):
             self.angular_y = 0.0
             self.angular_z = 0.0 
             #aiming 
-            if(angle > 0.10):
+            if(angle > 0.15):
                 #try to aim at the other bot
                 self.angular_x = 0.0
                 self.angular_y = 0.0
                 self.angular_z = -0.5 
-            elif(angle < -0.10):
+            elif(angle < -0.15):
                 #try to aim at the other bot
                 self.angular_x = 0.0
                 self.angular_y = 0.0
                 self.angular_z = 0.5
             else:
-                if(distance > 2.0):
+                if(distance > 1.0):
                     #get closer to enemy bot, charge forward!
                     self.linear_x = -1.0 #go forward
                     self.linear_y = 0.0
@@ -165,7 +167,13 @@ class MovementPublisher(Node):
             self.linear_z = 0.0
             self.angular_x = 0.0
             self.angular_y = 0.0
-            self.angular_z = 0.25 #rotate left     
+            if(self.stop_counter < 2):
+                self.angular_z = 0.25 #rotate left    
+            else:
+                self.angular_z = 0.0 #stop and scan aruco 
+            self.stop_counter+=1
+            if(self.stop_counter > 3):
+                self.stop_counter = 0
 
 def main(args=None):
     rclpy.init(args=args)
