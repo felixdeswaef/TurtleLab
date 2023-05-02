@@ -8,7 +8,7 @@ from adafruit_led_animation.animation.rainbow import Rainbow
 from adafruit_led_animation.sequence import AnimationSequence
 from adafruit_led_animation.color import *
 
-pixel_pin = board.D18
+pixel_pin = board.D10
 num_pixels = 34
 ORDER = neopixel.GRB
 

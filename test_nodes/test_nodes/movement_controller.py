@@ -34,7 +34,9 @@ class MovementPublisher(Node):
         self.angular_x = 0.0
         self.angular_y = 0.0
         self.angular_z = 0.0 #left-right control
-        timer_period_cmd_vel = 0.1  # seconds
+        #for rotation in short intervals:
+        self.stop_counter = 0
+        timer_period_cmd_vel = 0.5  # seconds
         #send command every timer_period seconds
         self.timer_cmd_vel = self.create_timer(timer_period_cmd_vel, self.publish_velocity)
         
@@ -83,7 +85,7 @@ class MovementPublisher(Node):
         msg.angular.z = self.angular_z
         #publish msg
         self.move_publisher.publish(msg)
-        #self.get_logger().info(f"Publishing a msg with msg:\nlinear:\n  x={msg.linear.x}\n  y={msg.linear.y}\n  z={msg.linear.z}\nangular:\n  x={msg.angular.x}\n  y={msg.angular.y}\n  z={msg.angular.z}\n")
+        self.get_logger().info(f"Publishing a msg with msg:\nlinear:\n  x={msg.linear.x}\n  y={msg.linear.y}\n  z={msg.linear.z}\nangular:\n  x={msg.angular.x}\n  y={msg.angular.y}\n  z={msg.angular.z}\n", throttle_duration_sec=1.0)
     
     def publish_enemy_distance(self):
         """
@@ -113,7 +115,7 @@ class MovementPublisher(Node):
         <distance> is a float that represents the distance to the other bot in m
         <detected> is an int 0->False, 1->True
         """
-        #self.get_logger().info(f"Camera_processor received msg = {msg.data}")
+        self.get_logger().info(f"Camera_processor received msg = {msg.data}", throttle_duration_sec=1.0)
         try:
             #parse msg
             distance, angle, detected = str(msg.data).split(";") 
@@ -129,9 +131,6 @@ class MovementPublisher(Node):
             #update msgs to /bot_state topic
             self.bot_state = "detected"
             #reset movement
-            self.linear_x = 0.0 
-            self.linear_y = 0.0
-            self.linear_z = 0.0
             self.angular_x = 0.0
             self.angular_y = 0.0
             self.angular_z = 0.0 
@@ -140,16 +139,16 @@ class MovementPublisher(Node):
                 #try to aim at the other bot
                 self.angular_x = 0.0
                 self.angular_y = 0.0
-                self.angular_z = -0.5 
+                self.angular_z = -0.1 
             elif(angle < -0.10):
                 #try to aim at the other bot
                 self.angular_x = 0.0
                 self.angular_y = 0.0
-                self.angular_z = 0.5
+                self.angular_z = 0.1
             else:
-                if(distance > 2.0):
+                if(distance > 1.0):
                     #get closer to enemy bot, charge forward!
-                    self.linear_x = -1.0 #go forward
+                    self.linear_x = -0.5 #go forward
                     self.linear_y = 0.0
                     self.linear_z = 0.0
                 else:
@@ -159,13 +158,20 @@ class MovementPublisher(Node):
                     self.linear_z = 0.0
                     self.bot_state = "shoot" #fire!
         else:
+            self.bot_state = "driving"
             #search enemy bot, start rotating by changing msgs to /cmd_vel topic
             self.linear_x = 0.0 
             self.linear_y = 0.0
             self.linear_z = 0.0
             self.angular_x = 0.0
             self.angular_y = 0.0
-            self.angular_z = 0.25 #rotate left     
+            if(self.stop_counter < 10):
+                self.angular_z = 0.10 #rotate left    
+            else:
+                self.angular_z = 0.0 #stop and scan aruco 
+            self.stop_counter+=1
+            if(self.stop_counter > 20):
+                self.stop_counter = 0
 
 def main(args=None):
     rclpy.init(args=args)

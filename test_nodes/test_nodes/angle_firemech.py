@@ -12,10 +12,10 @@ GPIO.setup(Tilt, GPIO.OUT) #Als output zetten
 servoTilt_pwm = GPIO.PWM(Tilt, 50) #servo frequency van 50Hz
 servoTilt_pwm.start(7.5) #start positie van servo in het midden bij het opstarten
 
-class Subscriber(Node):
+class SubscriberAngle(Node):
 
     def __init__(self):
-        super().__init__('minimal_subscriber')
+        super().__init__('anglemech_subscriber')
         self.subscription = self.create_subscription(Float64, '/enemy_distance',
                 self.listener_callback, 10)
         self.subscription  #prevent unused variable warning
@@ -24,21 +24,17 @@ class Subscriber(Node):
         angle = 7.5 + float(msg.data)/10
         servoTilt_pwm.ChangeDutyCycle(angle)
         time.sleep(0.5)
-        
-        #als er even niet geschoten moet worden dan mag de servo terug
-        #in zijn midden positie komen
-        #servoLader_pwm.ChangeDutyCycle(7.5)
             
         self.get_logger().info('I heard: "%s"' % msg.data)
 
 def main(args=None):
     rclpy.init(args=args)
 
-    AngleMech_subscriber = Subscriber()
+    anglemech_subscriber = SubscriberAngle()
 
-    rclpy.spin(AngleMech_subscriber)
+    rclpy.spin(anglemech_subscriber)
 
-    AngleMech_subscriber.destroy_node()
+    anglemech_subscriber.destroy_node()
     rclpy.shutdown()
 
 if __name__ == '__main__':

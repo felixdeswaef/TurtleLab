@@ -21,15 +21,15 @@ setup(
     entry_points={
         'console_scripts': [              
         	'talker = test_nodes.publisher_firemech_test:main',
-            'listener = test_nodes.firemech:main',
+            'firemech = test_nodes.firemech:main',
             'vel_publisher = test_nodes.vel_publisher:main',
             'keyboard_reader = test_nodes.keyboard_reader:main',
             'visual_cortex = test_nodes.visual_cortex:main',
             'lidarInput = test_nodes.lidarInput:main',
             'movement_controller = test_nodes.movement_controller:main',
             'test_visual_cortex = test_nodes.test_visual_cortex:main',
-            'ledSub = test_nodes.ledSub:main',
-            'angle = test_nodes.Angle_Firemech:main',
+            'ledsub = test_nodes.ledsub:main',
+            'angle = test_nodes.angle_firemech:main',
             'publi2 = test_nodes.publisher_anglemech_test:main'
         ],
     },
