@@ -6,8 +6,8 @@ def generate_launch_description():
     return LaunchDescription([
         Node(
             package='test_nodes',
-            executable='test_visual_cortex',
-            name='test_visual_cortex'
+            executable='visual_cortex',
+            name='visual_cortex'
         ),
         Node(
             package='test_nodes',
