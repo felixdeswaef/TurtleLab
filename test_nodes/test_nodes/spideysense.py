@@ -19,7 +19,7 @@ class Subscriber(Node):
     def __init__(self):
         super().__init__('minimal_subscriber')
         self.subscription = self.create_subscription(String, '/camera_info',
-                self.listener_callback, 10)
+                self.listener_callback, 1)
         self.i=0
         GPIO.output(Motoren, GPIO.LOW)
         self.subscription  # prevent unused variable warning
