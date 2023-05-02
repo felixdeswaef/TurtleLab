@@ -85,7 +85,7 @@ class MovementPublisher(Node):
         msg.angular.z = self.angular_z
         #publish msg
         self.move_publisher.publish(msg)
-        #self.get_logger().info(f"Publishing a msg with msg:\nlinear:\n  x={msg.linear.x}\n  y={msg.linear.y}\n  z={msg.linear.z}\nangular:\n  x={msg.angular.x}\n  y={msg.angular.y}\n  z={msg.angular.z}\n")
+        self.get_logger().info(f"Publishing a msg with msg:\nlinear:\n  x={msg.linear.x}\n  y={msg.linear.y}\n  z={msg.linear.z}\nangular:\n  x={msg.angular.x}\n  y={msg.angular.y}\n  z={msg.angular.z}\n")
     
     def publish_enemy_distance(self):
         """
@@ -135,16 +135,16 @@ class MovementPublisher(Node):
             self.angular_y = 0.0
             self.angular_z = 0.0 
             #aiming 
-            if(angle > 0.15):
+            if(angle > 0.10):
                 #try to aim at the other bot
                 self.angular_x = 0.0
                 self.angular_y = 0.0
-                self.angular_z = -0.2 
-            elif(angle < -0.15):
+                self.angular_z = -0.1 
+            elif(angle < -0.10):
                 #try to aim at the other bot
                 self.angular_x = 0.0
                 self.angular_y = 0.0
-                self.angular_z = 0.2
+                self.angular_z = 0.1
             else:
                 if(distance > 1.0):
                     #get closer to enemy bot, charge forward!
@@ -171,7 +171,6 @@ class MovementPublisher(Node):
             self.stop_counter+=1
             if(self.stop_counter > 20):
                 self.stop_counter = 0
-            print(f"stop_counter {self.stop_counter}")
 
 def main(args=None):
     rclpy.init(args=args)
