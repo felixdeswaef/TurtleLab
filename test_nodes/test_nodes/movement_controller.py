@@ -148,12 +148,12 @@ class MovementPublisher(Node):
             else:
                 if(distance > 1.0):
                     #get closer to enemy bot, charge forward!
-                    self.linear_x = -1.5 #go forward
+                    self.linear_x = -0.5 #go forward
                     self.linear_y = 0.0
                     self.linear_z = 0.0
                 else:
                     #close enough, stand still
-                    self.linear_x = 1.5 
+                    self.linear_x = 0.0 
                     self.linear_y = 0.0
                     self.linear_z = 0.0
                     self.bot_state = "shoot" #fire!
