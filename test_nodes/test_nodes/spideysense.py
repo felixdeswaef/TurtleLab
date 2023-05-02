@@ -22,7 +22,7 @@ class Subscriber(Node):
                 self.listener_callback, 10)
         self.subscription  # prevent unused variable warning
     
-    def shoot():
+    def shoot(self):
         GPIO.output(Motoren, GPIO.HIGH)
         time.sleep(2) #timer van 2 seconden zodat de motoren op snelheid geraken
         servoLader_pwm.ChangeDutyCycle(10.5) #servo van de lader eerst naar achter trekken zodat een pijlje in de loop kan vallen
