@@ -50,7 +50,7 @@ class Subscriber(Node):
                 GPIO.output(Motoren, GPIO.LOW)
                 self.i=0
         if 0.12>hoek>-0.12:
-            self.charge()
+            self.shoot()
     
         self.get_logger().info('I heard: "%s"' % msg.data)
 
