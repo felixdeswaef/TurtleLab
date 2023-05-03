@@ -17,7 +17,7 @@ class MinimalPublisher(Node):
     def timer_callback(self):
         msg = String()
         
-        msg.data += i;
+        msg.data += i
         
         if (msg.data > 5):
             msg.data = 0

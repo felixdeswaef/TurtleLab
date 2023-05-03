@@ -19,19 +19,23 @@ setup(
     license='TODO: License declaration',
     tests_require=['pytest'],
     entry_points={
-        'console_scripts': [              
+        'console_scripts': [
+            #main nodes
+            'visual_cortex = test_nodes.visual_cortex:main',   
+            'movement_controller = test_nodes.movement_controller:main',
+            'ledSub = test_nodes.ledSub:main',   
+            'firemech = test_nodes.firemech:main',   
+            #variations of firemech
+            'firemech_2 = test_nodes.firemech_2:main', 
+            'spideysense = test_nodes.spideysense:main',  
+            #testing nodes   
         	'talker = test_nodes.publisher_firemech_test:main',
-            'firemech = test_nodes.firemech:main',
             'vel_publisher = test_nodes.vel_publisher:main',
             'keyboard_reader = test_nodes.keyboard_reader:main',
-            'visual_cortex = test_nodes.visual_cortex:main',
             'lidarInput = test_nodes.lidarInput:main',
-            'movement_controller = test_nodes.movement_controller:main',
             'test_visual_cortex = test_nodes.test_visual_cortex:main',
-            'ledSub = test_nodes.ledSub:main',
             'angle = test_nodes.angle_firemech:main',
-            'publi2 = test_nodes.publisher_anglemech_test:main',
-            'spideysense= test_nodes.spideysense:main'
+            'publi2 = test_nodes.publisher_anglemech_test:main'   
         ],
     },
 )

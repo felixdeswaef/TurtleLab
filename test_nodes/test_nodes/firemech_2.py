@@ -18,7 +18,6 @@ class SubscriberFiremech(Node):
 
     def __init__(self):
         super().__init__('firemech_subscriber')
-        self.teller = 4 #max 4 consecutive shots
         self.subscription = self.create_subscription(
             String,                 #msg type
             '/bot_state',           #topic name
@@ -38,18 +37,13 @@ class SubscriberFiremech(Node):
             servoLader_pwm.ChangeDutyCycle(10.5)  # servo terug naar achter trekken zodat een volgend pijltje geladen wordt
             time.sleep(1)
 
-            self.teller -= 1
-            if (self.teller <= 0):  # Voor beveiliging dat de motoren niet te lang aan zijn
-                GPIO.output(Motoren, GPIO.LOW)
-                servoLader_pwm.ChangeDutyCycle(10.5)
-                time.sleep(0.5)
-        else:  # motoren uit
-            self.teller = 4  # reset teller, terug max 4 keer schieten
+        else:  # voor als er iets zou misgaan met de messages
             GPIO.output(Motoren, GPIO.LOW)
             servoLader_pwm.ChangeDutyCycle(10.5)
             time.sleep(0.5)
 
         self.get_logger().info(f"I heard: {msg.data}")
+
 
 def main(args=None):
     rclpy.init(args=args)
@@ -60,6 +54,7 @@ def main(args=None):
 
     firemech_subscriber.destroy_node()
     rclpy.shutdown()
+
 
 if __name__ == '__main__':
     main()
