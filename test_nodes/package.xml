@@ -13,8 +13,15 @@
   <exec_depend>select</exec_depend>
   <exec_depend>termios</exec_depend>
   <exec_depend>tty</exec_depend>
+  
   <!--  voor visual system -->
-  <exec_depend>python3-opencv</exec_depend>  
+  <exec_depend>python3-opencv</exec_depend>
+
+  <!-- voor LedSub -->
+  <exec_depend>RPi.GPIO<exec_depend>
+  <exec_depend>time<exec_depend>
+  <exec_depend>board<exec_depend>
+  <exec_depend>neopixel<exec_depend>
 
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>
