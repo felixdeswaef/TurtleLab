@@ -35,7 +35,7 @@ class SubscriberFiremech(Node):
             time.sleep(0.5)
             GPIO.output(Motoren, GPIO.LOW)
             servoLader_pwm.ChangeDutyCycle(10.5)  # servo terug naar achter trekken zodat een volgend pijltje geladen wordt
-            time.sleep(1)
+            #time.sleep(1) #kijken of dit nog wel nodig is
 
         else:  # voor als er iets zou misgaan met de messages
             GPIO.output(Motoren, GPIO.LOW)
